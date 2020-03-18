@@ -3,16 +3,21 @@ const Telegraf = require('telegraf');
 //richieste http
 const axios = require('axios');
 //tokenbot e crazione bot
-const tokenBot = "1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c"
+const tokenBot = "1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c";
 const bot = new Telegraf(tokenBot);
 
+function sum(a, b) {
+    return a + b;
+}
+module.exports = sum;
+
 bot.start((message) => {
-  console.log('started:', message.from.id)
+  console.log('started:', message.from.id);
   return message.reply(`Bevenuto nel bot di ThiReMa!Per vedere la lista del comandi che puoi utilizzare usa il comando /info `)
-})
+});
 
 bot.command('login', message => {
-  const url = message.message.text;
+  //const url = message.message.text;
   const username = message.from.username;
   const chatId = message.from.id;
   axios
@@ -42,7 +47,7 @@ bot.command('login', message => {
 bot.command('info', ({ reply }) => reply(`
   1) Login: /login
   `
-))
+));
 
 bot.command('test', (message,token,chatID) => {
   token = 123456;
@@ -51,6 +56,7 @@ bot.command('test', (message,token,chatID) => {
     .post(`https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatID}&text=${token}`)
     //https://api.telegram.org/bot1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c/sendMessage?chat_id="226026285"&text="ciao"
     .then(res => {
+      console.log(res);
       return message.reply('Token inviato');
     })
     .catch(err => {
@@ -58,6 +64,7 @@ bot.command('test', (message,token,chatID) => {
       return message.reply(`Errore nell'invio del messaggio`);
     });
 });
+
 // bot.on('text', message => {
 //   const url = message.message.text;
 //   axios
@@ -70,7 +77,7 @@ bot.command('test', (message,token,chatID) => {
 //     //console.log(err);
 //     return message.reply('Errore nel caricamento dei dati');
 //   });
-
 // });
+
 console.log('Bot avviato correttamente');
 bot.launch();
