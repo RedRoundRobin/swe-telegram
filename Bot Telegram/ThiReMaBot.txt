@@ -6,8 +6,12 @@ Token:
 Link:
 t.me/ThiReMaBot
 
-Comandi
+Comandi:
 info - Comandi supportati
 login - Login al sistema ThiReMa
-start - Avvia ThiReMa bot
-stop - Stoppa ThiReMa bot
+
+Istruzioni per avviarlo:
+- installare node
+- entrare nella cartella con il terminale
+- $ npm install
+- $ node bot
