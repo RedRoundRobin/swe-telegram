@@ -36,7 +36,7 @@ jobs:
     - name: Run project build
       run: npm run build --if-present
     - name: Run project test 
-    - run: npm test
+      run: npm test
       #env:
         #CI: true
     - name: Coveralls Parallel
