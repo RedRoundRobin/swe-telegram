@@ -9,6 +9,8 @@ t.me/ThiReMaBot
 Comandi:
 info - Comandi supportati
 login - Login al sistema ThiReMa
+test - Test di invio token A2F a giovanni
+
 
 Istruzioni per avviarlo:
 - installare node
