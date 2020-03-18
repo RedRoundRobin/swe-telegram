@@ -1,0 +1,13 @@
+ThiReMaBot
+
+Token:
+1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c
+
+Link:
+t.me/ThiReMaBot
+
+Comandi
+info - Comandi supportati
+login - Login al sistema ThiReMa
+start - Avvia ThiReMa bot
+stop - Stoppa ThiReMa bot
