@@ -4,7 +4,7 @@
   "description": "Bot Telegram ThiReMa",
   "main": "bot.js",
   "scripts": {
-    "test": "jest --coverage --coverageReporters=text-lcov --forceExit"
+    "test": "jest --coverage --forceExit"
   },
   "author": "RedRoundRobin",
   "license": "ISC",
