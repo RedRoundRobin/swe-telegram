@@ -1,0 +1,19 @@
+ThiReMaBot
+
+Token:
+1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c
+
+Link:
+t.me/ThiReMaBot
+
+Comandi:
+info - Comandi supportati
+login - Login al sistema ThiReMa
+test - Test di invio token A2F a giovanni
+
+
+Istruzioni per avviarlo:
+- installare node
+- entrare nella cartella con il terminale
+- $ npm install
+- $ node bot
