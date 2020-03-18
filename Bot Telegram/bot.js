@@ -38,20 +38,17 @@ bot.on('text', message => {
 console.log('Bot avviato correttamente');
 bot.launch();
 
-// const Telegraf = require('telegraf')
-// const Extra = require('telegraf/extra')
-// const Markup = require('telegraf/markup')
+const pg = require('pg')
+const QueryStream = require('pg-query-stream')
+const JSONStream = require('JSONStream')
 
-// const keyboard = Markup.inlineKeyboard([
-//   Markup.loginButton('Login', 'http://domain.tld/hash', {
-//     bot_username: 'my_bot',
-//     request_write_access: 'true'
-//   }),
-//   Markup.urlButton('❤️', 'http://telegraf.js.org'),
-//   Markup.callbackButton('Delete', 'delete')
-// ])
 
-// const bot = new Telegraf("1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c");
-// bot.start((ctx) => ctx.reply('Hello', Extra.markup(keyboard)))
-// bot.action('delete', ({ deleteMessage }) => deleteMessage())
-// bot.launch()
+//POSTGRES
+pg.connect((err, client, done) => {
+  if (err) throw err;
+  const query = new QueryStream('SELECT * FROM generate_series(0, $1) num', [1000000])
+  const stream = client.query(query)
+  //release the client when the stream is finished
+  stream.on('end', done)
+  stream.pipe(JSONStream.stringify()).pipe(process.stdout)
+})
