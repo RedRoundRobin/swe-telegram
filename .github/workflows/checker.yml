@@ -1,0 +1,65 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: SWE Telegram CI
+
+on:
+  push:
+    branches: 
+      - develop
+      - master
+      - feature/**
+  pull_request:
+    branches: 
+      - develop
+      - master
+      - feature/**
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+    - name: Checkout repo content
+      uses: actions/checkout@v2
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Run dependencies installation
+      run: npm ci
+    - name: Run project build
+      run: npm run build --if-present
+    - name: Run project test 
+    - run: npm test
+      #env:
+        #CI: true
+    - name: Coveralls Parallel
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel: true
+        path-to-lcov: ./coverage/lcov.info # optional (default value)
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true
+    - name: Slack Notification
+      uses: homoluctus/slatify@v2.0.1
+      if: failure()
+      with:
+        type: ${{ job.status }}
+        job_name: 'CI Check'
+        mention: 'here'
+        mention_if: 'failure'
+        channel: '#devops_software'
+        username: 'CI Checker'
+        url: ${{ secrets.SLACK_SW_WEBHOOK }}
+        commit: true
+        token: ${{ secrets.GITHUB_TOKEN }}  
