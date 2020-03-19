@@ -15,7 +15,6 @@ const {parse} = require('querystring');
 //     return a + b;
 // }
 // module.exports = sum;
-
 const server = http.createServer((req, res) => { //request and response object
     if (req.method === 'POST') {
         let jsonRes = '';
@@ -30,6 +29,11 @@ const server = http.createServer((req, res) => { //request and response object
         });
         console.log(jsonRes);
     }
+});
+
+server.listen(3000, '127.0.0.1');
+console.log('Server to port 3000');
+
     console.log("asaas");
     bot.start((message) => {
         console.log('started:', message.from.id);
@@ -37,31 +41,34 @@ const server = http.createServer((req, res) => { //request and response object
         return message.reply('Ciao '+message.from.first_name+', benvenuto nel bot di ThiReMa! Per vedere la lista del comandi che puoi utilizzare usa il comando /info ')
     });
 
+
+
     bot.command('login', message => {
         //const url = message.message.text;
         const username = message.from.username;
         const chatId = message.from.id;
-        axios
-        .get(`http://localhost:9999/login/${username}`)
-        .then(res => {
-            console.log(username);
-            console.log(chatId);
-            const data = res.data;
-            console.log(data);
-            if (data === 1) {
-            return message.reply('Username trovato, registrazione riuscita');
-            }else if (data === 2) {
-            return message.reply('Account già registrato, nessuna modifica apportata');
-            }else if (data === 0) {
-            return message.reply('Username non trovato, registra il tuo Username dalla web-app');
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            return message.reply('Errore nel controllo dei dati');
-        });
+            axios
+                .get(`http://localhost:9999/login/${username}`)
+                .then(res => {
+                 console.log(username);
+                 console.log(chatId);
+                 const data = res.data;
+                 console.log(data);
+                 if (data === 1) {
+                     return message.reply('Username trovato, registrazione riuscita');
+                 }else if (data === 2) {
+                     return message.reply('Account già registrato, nessuna modifica apportata');
+                }else if (data === 0) {
+                    return message.reply('Username non trovato, registra il tuo Username dalla web-app');
+                 }
+            })
+            .catch(err => {
+                console.log(err);
+                return message.reply('Errore nel controllo dei dati');
+            });
+
     });
-    res.render
+   
     // bot.command('status', message => {
     //     const username = message.from.username;
 
@@ -106,6 +113,13 @@ const server = http.createServer((req, res) => { //request and response object
         `
      ));
 
+
+    bot.command('info', ({ reply}) => reply(
+    `1) Login: /login  
+          2)Status: /status`
+    ));
+
+
     bot.command('test', (message,token,chatID) => {
         token = 123456;
         chatID = 226026286;
@@ -123,6 +137,5 @@ const server = http.createServer((req, res) => { //request and response object
     });
     console.log('Bot avviato correttamente');
     bot.launch();
-});
-server.listen(3000, '127.0.0.1');
-console.log('Server to port 3000');
+
+
