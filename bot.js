@@ -115,48 +115,47 @@ bot.command('login', message => {
         });
     });
 
-    //  bot.command('status', message => {
-    //      const username = message.from.username;
+      bot.command('status', message => {
+          const username = message.from.username;
 
-    //      axios
-    //          .get(`http://localhost:9999/status/${username}`)
-    //          .then(res => {
-    //              const data = res.data;
-    //              let userInfo = JSON.parse(data);
+          axios
+              .get(`http://localhost:9999/status/${username}`)
+              .then(res => {
+                  const data = res.data;
+                  let userInfo = JSON.parse(data);
 
-    //              let name = userInfo.name;
-    //              let surname = userInfo.surname;
-    //              let email = userInfo.email;
-    //              let type = userInfo.type;
-    //              let code = userInfo.code;
-    //              let mex = "";
-    //              if (code === 0) {
-    //                  mex = "Non hai attivato ancora l'autenticazione a due fattori nella web-app; usa /start non appena avrai fatto.";
-    //              } else if (code === 1) {
-    //                  mex = "Hai attivato l'autenticazione a due fattori; usa /start per completare la procedura";
-    //              } else if (code === 2) {
-    //                  mex = "L'autenticazione a due fattori è attiva";
-    //              }
+                  let name = userInfo.name;
+                  let surname = userInfo.surname;
+                  let email = userInfo.email;
+                  let type = userInfo.type;
+                  let code = userInfo.code;
+                  let mex = "";
+                  if (code === 0) {
+                      mex = "Non hai attivato ancora l'autenticazione a due fattori nella web-app; usa /start non appena avrai fatto.";
+                  } else if (code === 1) {
+                      mex = "Hai attivato l'autenticazione a due fattori; usa /start per completare la procedura";
+                  } else if (code === 2) {
+                      mex = "L'autenticazione a due fattori è attiva";
+                  }
 
-    //              return message.replyWithHTML('<ul>' +
-    //                  '<li>' + name + '</li>' +
-    //                  '<li>' + surname + '</li>' +
-    //                  '<li>' + email + '</li>' +
-    //                  '<li>' + type + '</li>' +
-    //                  '<li>' + mex + '</li>' +
-    //                  '</ul> ');
+                  return message.reply(`
+                      1)Nome: ${name}
+                      2)Cognome: ${surname}
+                      3)Email: ${email}
+                      4)Tipo: ${type}
+                       ${mex}`);
 
 
-    //          })
-    //          .catch(err => {
-    //              if(err.response.status === 403)
-    //              {
-    //                  message.reply("Rieffettua l'autenticazione usando il comando /login");
-    //              }else {
-    //                  message.reply('Errore nel controllo dei dati');
-    //              }
-    //          });
-    //  });
+              })
+              .catch(err => {
+                  if(err.response.status === 403)
+                  {
+                      message.reply("Rieffettua l'autenticazione usando il comando /login");
+                  }else {
+                      message.reply('Errore nel controllo dei dati');
+                  }
+              });
+      });
 
 
     bot.command('info', ({ reply}) => reply(`
