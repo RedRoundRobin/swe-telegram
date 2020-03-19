@@ -52,6 +52,16 @@ const server = http.createServer((req, res) => { //request and response object
         let jsonRes = '';
         req.on('data', data => {
             jsonRes += data.toString();
+            let response = JSON.parse(jsonRes);
+
+            let chatId = response.chat_id;
+            let authCode = response.auth_code;
+            axios
+                .post("https://api.telegram.org/bot"+tokenBot+"/sendMessage?chat_id="+chatId+"&text="+authCode)
+                .then(res =>{console.log("Messaggio inviato con successo")})
+                .catch(err => {console.log("Errore nell'invio del messaggio")});
+
+
         });
         req.on('end', () => {
             console.log(
