@@ -2,9 +2,10 @@
 const Telegraf = require('telegraf');
 //richieste http
 const axios = require('axios');
-//tokenbot e crazione bot
+//tokenbot e creazione bot
 const tokenBot = "1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c";
 const bot = new Telegraf(tokenBot);
+const http = require('http');
 
 function sum(a, b) {
     return a + b;
@@ -13,7 +14,8 @@ module.exports = sum;
 
 bot.start((message) => {
   console.log('started:', message.from.id);
-  return message.reply(`Bevenuto nel bot di ThiReMa!Per vedere la lista del comandi che puoi utilizzare usa il comando /info `)
+  //http.
+  return message.reply('Ciao '+message.from.first_name+', benvenuto nel bot di ThiReMa! Per vedere la lista del comandi che puoi utilizzare usa il comando /info ')
 });
 
 bot.command('login', message => {
@@ -28,13 +30,11 @@ bot.command('login', message => {
       const data = res.data;
       console.log(data);
       if (data === 1) {
-        return message.reply('Account trovato, registrazione riuscita');
-      }
-      if (data === 2) {
+        return message.reply('Username trovato, registrazione riuscita');
+      }else if (data === 2) {
         return message.reply('Account già registrato, nessuna modifica apportata');
-      }
-      if (data === 0) {
-        return message.reply('Account non trovato, registra il tuo account Telegram dalla web-app');
+      }else if (data === 0) {
+        return message.reply('Username non trovato, registra il tuo Username dalla web-app');
       }
     })
     .catch(err => {
@@ -44,6 +44,22 @@ bot.command('login', message => {
 
 });
 
+bot.command('status', message => {
+    const username = message.from.username;
+    axios
+        .get(`http://localhost:9999/status/${username}`)
+        .then(res =>{
+            const data = res.data;
+            if(data === 0){
+                //INFO UTENTE
+                return message.reply('');
+            }
+        })
+        .catch(err => {
+        console.log(err);
+        return message.reply('Errore nel controllo dei dati');
+    });
+});
 bot.command('info', ({ reply }) => reply(`
   1) Login: /login
   `

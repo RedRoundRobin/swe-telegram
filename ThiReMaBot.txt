@@ -10,6 +10,7 @@ Comandi:
 info - Comandi supportati
 login - Login al sistema ThiReMa
 test - Test di invio token A2F a giovanni
+status - Controllo lo status dell'utente
 
 
 Istruzioni per avviarlo:
