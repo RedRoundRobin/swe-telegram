@@ -15,39 +15,39 @@ const {parse} = require('querystring');
 //     return a + b;
 // }
 // module.exports = sum;
-function login(username, chatId) {
-    let mex ="";
-    axios
-        .get(`http://localhost:9999/login/${username}`)
-        .then(res => {
-            console.log(username);
-            console.log(chatId);
-            const data = res.data.toString();
-            let response = parse(data);
-            axios.defaults.headers.common[Authorization] = 'Bearer '+response.token;
-            let code = response.code;
-            if (code === 1) {
-                mex =  'Username trovato, registrazione riuscita';
-            }else if (code === 2) {
-                mex = 'Account già registrato, nessuna modifica apportata';
-            }else if (code === 0) {
-                mex = 'Username non trovato, registra il tuo Username dalla web-app';
-            }
-        })
-        .catch(err => {
-            // console.log("ERRORE")
-            // //console.log(err.status);
-            // if(true)
-            // {
-            //     mex = "Rieffettua l'autenticazione usando il comando /login";
-            // }else {
-            //     mex = 'Errore nel controllo dei dati';
-            // }
-            console.log(err.response.status);
+// function login(username, chatId) {
+//     let mex ="";
+//     axios
+//         .get(`http://localhost:9999/login/${username}`)
+//         .then(res => {
+//             console.log(username);
+//             console.log(chatId);
+//             const data = res.data.toString();
+//             let response = parse(data);
+//             axios.defaults.headers.common[Authorization] = 'Bearer '+response.token;
+//             let code = response.code;
+//             if (code === 1) {
+//                 mex +=  "Username trovato, registrazione riuscita";
+//             }else if (code === 2) {
+//                 mex += "Account già registrato, nessuna modifica apportata";
+//             }else if (code === 0) {
+//                 mex += "Username non trovato, registra il tuo Username dalla web-app";
+//             }
+//         })
+//         .catch(err => {
+//             // console.log("ERRORE")
+//             // //console.log(err.status);
+//             // if(true)
+//             // {
+//             //     mex = "Rieffettua l'autenticazione usando il comando /login";
+//             // }else {
+//             //     mex = 'Errore nel controllo dei dati';
+//             // }
+//             console.log("ERRORE");
 
-        });
-    return mex;
-}
+//         });
+//     return mex;
+// }
 
 const server = http.createServer((req, res) => { //request and response object
     if (req.method === 'POST') {
@@ -56,17 +56,12 @@ const server = http.createServer((req, res) => { //request and response object
             jsonRes += data.toString();
             console.log(parse(jsonRes));
             let response = parse(jsonRes);
-
             let chatId = response.chat_id;
-            console.log(chatId);
             let authCode = response.auth_code;
-            console.log(authCode);
             axios
                 .post(`https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=${authCode}`)
                 .then(res =>{console.log("Messaggio inviato con successo")})
                 .catch(err => {console.log("Errore nell'invio del messaggio")});
-
-
         });
         req.on('end', () => {
             console.log(
@@ -83,20 +78,41 @@ console.log('Server to port 3000');
 
     bot.start((message) => {
         console.log('started:', message.from.id);
-        const username = message.from.username;
-        const chatId = message.from.id;
-        let mex = login(username,chatId);
+        // const username = message.from.username;
+        // const chatId = message.from.id;
+        // let mex = login(username,chatId);
         return message.reply('Ciao '+message.from.first_name+', benvenuto nel bot di ThiReMa! Per vedere la lista del comandi che puoi utilizzare usa il comando /info ')
     });
 
 
 
-    bot.command('login', message => {
-        // const url = message.message.text;
-        // const username = message.from.username;
-        // const chatId = message.from.id;
-        // let mex = login(username, chatId);
-        // return message.reply(mex);
+bot.command('login', message => {
+    //const url = message.message.text;
+    const username = message.from.username;
+    const chatId = message.from.id;
+    axios
+        .get(`http://localhost:9999/login/${username}`)
+        .then(res => {
+            const code = res.data.code;
+            const token = res.data.token;
+            axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
+            if (code === 1) {
+                return message.reply('Username trovato, registrazione riuscita');
+            } else if (code === 2) {
+                return message.reply('Account già registrato, nessuna modifica apportata');
+            } else if (code === 0) {
+                return message.reply('Username non trovato, registra il tuo Username dalla web-app');
+            }
+        })
+        .catch(err => {
+            console.log("ERRORE")
+            //console.log(err.status);
+            if(true) {
+                mex = "Rieffettua l'autenticazione usando il comando /login";
+            } else {
+                mex = 'Errore nel controllo dei dati';
+            }
+        });
     });
 
     //  bot.command('status', message => {
@@ -143,27 +159,11 @@ console.log('Server to port 3000');
     //  });
 
 
-    bot.command('info', ({ reply}) => reply(
-    `1) Login: /login  
-          2)Status: /status`
+    bot.command('info', ({ reply}) => reply(`
+    1) Login: /login
+    2) Status: /status`
     ));
 
-
-    // bot.command('test', (message,token,chatID) => {
-    //     token = 123456;
-    //     chatID = 226026285;
-    //     axios
-    //     .post(`https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatID}&text=${token}`)
-    //     //https://api.telegram.org/bot1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c/sendMessage?chat_id="226026285"&text="ciao"
-    //     .then(res => {
-    //         console.log(res);
-    //         return message.reply('Token inviato');
-    //     })
-    //     .catch(err => {
-    //         console.log(err.response.status);
-    //         return message.reply(`Errore nell'invio del messaggio`);
-    //     });
-    // });
     console.log('Bot avviato correttamente');
     bot.launch();
 
