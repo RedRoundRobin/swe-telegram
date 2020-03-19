@@ -7,8 +7,8 @@ const tokenBot = "1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c";
 const bot = new Telegraf(tokenBot);
 //richiesta per creazione server
 const http = require('http');
-
-const { parse } = require('querystring');
+//
+const {parse} = require('querystring');
 
 
 // function sum(a, b) {
@@ -30,7 +30,7 @@ const server = http.createServer((req, res) => { //request and response object
         });
         console.log(jsonRes);
     }
-
+    console.log("asaas");
     bot.start((message) => {
         console.log('started:', message.from.id);
         //http.
@@ -61,24 +61,45 @@ const server = http.createServer((req, res) => { //request and response object
             return message.reply('Errore nel controllo dei dati');
         });
     });
-    res.render('ok');
-    
-    bot.command('status', message => {
-        const username = message.from.username;
-        axios
-            .get(`http://localhost:9999/status/${username}`)
-            .then(res =>{
-                const data = res.data;
-                if(data === 0){
-                    //INFO UTENTE
-                    return message.reply('');
-                }
-            })
-            .catch(err => {
-            console.log(err);
-            return message.reply('Errore nel controllo dei dati');
-            });
-    });
+    res.render
+    // bot.command('status', message => {
+    //     const username = message.from.username;
+
+    //     axios
+    //         .get(`http://localhost:9999/status/${username}`)
+    //         .then(res => {
+    //             const data = res.data;
+    //             let userInfo = JSON.parse(data);
+
+    //             let name = userInfo.name;
+    //             let surname = userInfo.surname;
+    //             let email = userInfo.email;
+    //             let type = userInfo.type;
+    //             let code = userInfo.code;
+    //             let mex = "";
+    //             if (code === 0) {
+    //                 mex = "Non hai attivato ancora l'autenticazione a due fattori nella web-app; usa /start non appena avrai fatto.";
+    //             } else if (code === 1) {
+    //                 mex = "Hai attivato l'autenticazione a due fattori; usa /start per completare la procedura";
+    //             } else if (code === 2) {
+    //                 mex = "L'autenticazione a due fattori è attiva";
+    //             }
+
+    //             return message.replyWithHTML('<ul>' +
+    //                 '<li>' + name + '</li>' +
+    //                 '<li>' + surname + '</li>' +
+    //                 '<li>' + email + '</li>' +
+    //                 '<li>' + type + '</li>' +
+    //                 '<li>' + mex + '</li>' +
+    //                 '</ul> ');
+
+
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //             return message.reply('Errore nel controllo dei dati');
+    //         });
+    // });
 
     bot.command('info', ({ reply }) => reply(`
         1) Login: /login
