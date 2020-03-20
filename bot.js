@@ -91,10 +91,13 @@ bot.command('login', message => {
     const username = message.from.username;
     const chatId = message.from.id;
     axios
-        .get(`http://localhost:9999/login/${username}`)
+        .post(`http://localhost:9999/auth/telegram`, {"telegramName":username, "telegramChat":chatId})
         .then(res => {
+            console.log(res.data);
             const code = res.data.code;
             const token = res.data.token;
+            console.log(code);
+            console.log(token);
             axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
             if (code === 1) {
                 return message.reply('Username trovato, registrazione riuscita');
@@ -105,7 +108,7 @@ bot.command('login', message => {
             }
         })
         .catch(err => {
-            console.log("ERRORE")
+            console.log(err)
             //console.log(err.status);
             if(true) {
                 mex = "Rieffettua l'autenticazione usando il comando /login";
