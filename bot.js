@@ -15,39 +15,6 @@ const {parse} = require('querystring');
 //     return a + b;
 // }
 // module.exports = sum;
-// function login(username, chatId) {
-//     let mex ="";
-//     axios
-//         .get(`http://localhost:9999/login/${username}`)
-//         .then(res => {
-//             console.log(username);
-//             console.log(chatId);
-//             const data = res.data.toString();
-//             let response = parse(data);
-//             axios.defaults.headers.common[Authorization] = 'Bearer '+response.token;
-//             let code = response.code;
-//             if (code === 1) {
-//                 mex +=  "Username trovato, registrazione riuscita";
-//             }else if (code === 2) {
-//                 mex += "Account già registrato, nessuna modifica apportata";
-//             }else if (code === 0) {
-//                 mex += "Username non trovato, registra il tuo Username dalla web-app";
-//             }
-//         })
-//         .catch(err => {
-//             // console.log("ERRORE")
-//             // //console.log(err.status);
-//             // if(true)
-//             // {
-//             //     mex = "Rieffettua l'autenticazione usando il comando /login";
-//             // }else {
-//             //     mex = 'Errore nel controllo dei dati';
-//             // }
-//             console.log("ERRORE");
-
-//         });
-//     return mex;
-// }
 
 const server = http.createServer((req, res) => { //request and response object
     if (req.method === 'POST') {
@@ -76,17 +43,18 @@ const server = http.createServer((req, res) => { //request and response object
 server.listen(3000, '127.0.0.1');
 console.log('Server to port 3000');
 
-    bot.start((message) => {
-        console.log('started:', message.from.id);
-        const username = message.from.username;
-        // const chatId = message.from.id;
-        // let mex = login(username,chatId);
-        return message.reply(`Ciao ${username}, benvenuto nel bot di ThiReMa! 
-        Usa il comando /login per effettuare l'autenticazione.
-        Per vedere la lista del comandi che puoi utilizzare usa il comando /info `)
-    });
-
-
+bot.start((message) => {
+    console.log('started:', message.from.id);
+    const username = message.from.username;
+    // const chatId = message.from.id;
+    // let mex = login(username,chatId);
+    return message.replyWithMarkdown(
+`
+Ciao *${username}*, benvenuto nel bot di ThiReMa!
+Usa il comando /login per effettuare l'autenticazione.
+Per vedere la lista del comandi che puoi utilizzare usa il comando /info
+`)
+});
 
 bot.command('login', message => {
     //const url = message.message.text;
@@ -112,56 +80,55 @@ bot.command('login', message => {
         .catch(err => {
             console.log(err)
             //console.log(err.status);
-            if(true) {
-                mex = "Rieffettua l'autenticazione usando il comando /login";
+            if (err.response.status === 403) {
+                return message.reply("Rieffettua l'autenticazione usando il comando /login");
             } else {
-                mex = 'Errore nel controllo dei dati';
+                return message.reply('Errore nel controllo dei dati');
             }
         });
     });
 
-      bot.command('status', message => {
-          const username = message.from.username;
-
-          axios
-              .get(`http://localhost:9999/status`)
-              .then(res => {
-                  const data = res.data;
-
-                  const name = data.name;
-                  const surname = data.surname;
-                  const email = data.email;
-                  const typeNumber = data.type;
-                  let type = "Utente"
-                  if(typeNumber===1) {
-                      type = "Moderatore";
-                  }else if(typeNumber===2) {
-                      type = "Amministratore";
-                  }
-
-                  return message.reply(`
-                      1)Nome: ${name}
-                      2)Cognome: ${surname}
-                      3)Email: ${email}
-                      4)Tipo: ${type}`
-                       );
-
-
-              })
-              .catch(err => {
-                  if(err.response.status === 403)
-                  {
-                      message.reply("Rieffettua l'autenticazione usando il comando /login");
-                  }else {
-                      message.reply('Errore nel controllo dei dati');
-                  }
-              });
-      });
+    bot.command('status', message => {
+        const username = message.from.username;
+        axios
+            .get(`http://localhost:9999/status`)
+            .then(res => {
+                const data = res.data;
+                const name = data.name;
+                const surname = data.surname;
+                const email = data.email;
+                const typeNumber = data.type;
+                let type = "Utente"
+                if (typeNumber===1) {
+                    type = "Moderatore";
+                } else if (typeNumber===2) {
+                    type = "Amministratore";
+                }
+                return message.replyWithMarkdown(
+`
+Ecco i tuoi dati *${message.from.username}*
+- *Nome:* ${name}
+- *Cognome:* ${surname}
+- *Email:* ${email}
+- *Tipo:* ${type}`
+                    );
+            })
+            .catch(err => {
+                if (err.response.status === 403) {
+                    message.reply("Rieffettua l'autenticazione usando il comando /login");
+                } else {
+                    message.reply('Errore nel controllo dei dati');
+                }
+            });
+    });
 
 
-    bot.command('info', ({reply}) => reply(`
-    1) Login: /login
-    2) Status: /status`
+    bot.command('info', ({replyWithMarkdown}) => replyWithMarkdown(
+`
+Ecco la lista dei comandi disponibili:
+- Login: /login
+- Status: /status
+- Info: /info`
     ));
 
     console.log('Bot avviato correttamente');
