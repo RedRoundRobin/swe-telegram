@@ -21,8 +21,8 @@ const server = http.createServer((req, res) => { //request and response object
         let jsonRes = '';
         req.on('data', data => {
             jsonRes += data.toString();
-            console.log(parse(jsonRes));
-            let response = parse(jsonRes);
+            console.log(JSON.parse(jsonRes));
+            let response = JSON.parse(jsonRes);
             let chatId = response.chat_id;
             let authCode = response.auth_code;
             axios
@@ -31,9 +31,7 @@ const server = http.createServer((req, res) => { //request and response object
                 .catch(err => {console.log("Errore nell'invio del messaggio")});
         });
         req.on('end', () => {
-            console.log(
-                parse(jsonRes)
-            );
+            console.log(JSON.parse(jsonRes));
             res.end('ok');
         });
         console.log(jsonRes);
