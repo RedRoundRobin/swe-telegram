@@ -27,8 +27,8 @@ const server = http.createServer((req, res) => { //request and response object
             let authCode = response.auth_code;
             axios
                 .post(`https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=Ecco il tuo codice di autenticazione: ${authCode}`)
-                .then(res =>{console.log("Messaggio inviato con successo")})
-                .catch(err => {console.log("Errore nell'invio del messaggio")});
+                .then(() =>{console.log("Messaggio inviato con successo")})
+                .catch(err => {console.log("Errore "+err.response.status+" nell'invio del messaggio")});
         });
         req.on('end', () => {
             console.log(JSON.parse(jsonRes));
@@ -44,8 +44,6 @@ console.log('Server to port 3000');
 bot.start((message) => {
     console.log('started:', message.from.id);
     const username = message.from.username;
-    // const chatId = message.from.id;
-    // let mex = login(username,chatId);
     return message.replyWithMarkdown(
 `
 Ciao *${username}*, benvenuto nel bot di ThiReMa!
@@ -55,7 +53,6 @@ Per vedere la lista del comandi che puoi utilizzare usa il comando /info
 });
 
 bot.command('login', message => {
-    //const url = message.message.text;
     const username = message.from.username;
     const chatId = message.from.id;
     axios
@@ -87,7 +84,6 @@ bot.command('login', message => {
     });
 
     bot.command('status', message => {
-        const username = message.from.username;
         axios
             .get(`http://localhost:9999/status`)
             .then(res => {
