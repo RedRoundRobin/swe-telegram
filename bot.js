@@ -93,15 +93,15 @@ bot.command('login', message => {
     axios
         .post(`http://localhost:9999/auth/telegram`, {"telegramName":username, "telegramChat":chatId})
         .then(res => {
-            console.log(res.data);
+
             const code = res.data.code;
             const token = res.data.token;
-            console.log(code);
-            console.log(token);
-            axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
+
             if (code === 1) {
+                axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
                 return message.reply('Username trovato, registrazione riuscita');
             } else if (code === 2) {
+                axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
                 return message.reply('Account già registrato, nessuna modifica apportata');
             } else if (code === 0) {
                 return message.reply('Username non trovato, registra il tuo Username dalla web-app');
@@ -122,31 +122,29 @@ bot.command('login', message => {
           const username = message.from.username;
 
           axios
-              .get(`http://localhost:9999/status/${username}`)
+              .get(`http://localhost:9999/status`)
               .then(res => {
                   const data = res.data;
-                  let userInfo = JSON.parse(data);
 
-                  let name = userInfo.name;
-                  let surname = userInfo.surname;
-                  let email = userInfo.email;
-                  let type = userInfo.type;
-                  let code = userInfo.code;
-                  let mex = "";
-                  if (code === 0) {
-                      mex = "Non hai attivato ancora l'autenticazione a due fattori nella web-app; usa /start non appena avrai fatto.";
-                  } else if (code === 1) {
-                      mex = "Hai attivato l'autenticazione a due fattori; usa /start per completare la procedura";
-                  } else if (code === 2) {
-                      mex = "L'autenticazione a due fattori è attiva";
+                  const name = data.name;
+                  const surname = data.surname;
+                  const email = data.email;
+                  const typeNumber = data.type;
+                  let type = "Utente"
+                  if(typeNumber===1) {
+                      type = "Moderatore";
+                  }else if(typeNumber===2) {
+                      type = "Amministratore";
                   }
+
+
 
                   return message.reply(`
                       1)Nome: ${name}
                       2)Cognome: ${surname}
                       3)Email: ${email}
-                      4)Tipo: ${type}
-                       ${mex}`);
+                      4)Tipo: ${type}`
+                       );
 
 
               })
@@ -161,7 +159,7 @@ bot.command('login', message => {
       });
 
 
-    bot.command('info', ({ reply}) => reply(`
+    bot.command('info', ({reply}) => reply(`
     1) Login: /login
     2) Status: /status`
     ));
