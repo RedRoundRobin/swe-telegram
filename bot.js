@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => { //request and response object
             let chatId = response.chat_id;
             let authCode = response.auth_code;
             axios
-                .post(`https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=${authCode}`)
+                .post(`https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=Ecco il tuo codice di autenticazione: ${authCode}`)
                 .then(res =>{console.log("Messaggio inviato con successo")})
                 .catch(err => {console.log("Errore nell'invio del messaggio")});
         });
