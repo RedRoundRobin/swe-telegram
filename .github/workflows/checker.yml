@@ -39,17 +39,17 @@ jobs:
       run: npm test
       #env:
         #CI: true
-    - name: Coveralls Parallel
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        parallel: true
-        path-to-lcov: ./coverage/lcov.info # optional (default value)
-    - name: Coveralls Finished
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        parallel-finished: true
+    #- name: Coveralls Parallel
+    #  uses: coverallsapp/github-action@master
+    #  with:
+    #    github-token: ${{ secrets.GITHUB_TOKEN }}
+    #    parallel: true
+    #    path-to-lcov: ./coverage/lcov.info # optional (default value)
+    #- name: Coveralls Finished
+    #  uses: coverallsapp/github-action@master
+    #  with:
+    #    github-token: ${{ secrets.GITHUB_TOKEN }}
+    #    parallel-finished: true
     - name: Slack Notification
       uses: homoluctus/slatify@v2.0.1
       if: failure()
