@@ -78,10 +78,12 @@ console.log('Server to port 3000');
 
     bot.start((message) => {
         console.log('started:', message.from.id);
-        // const username = message.from.username;
+        const username = message.from.username;
         // const chatId = message.from.id;
         // let mex = login(username,chatId);
-        return message.reply('Ciao '+message.from.first_name+', benvenuto nel bot di ThiReMa! Per vedere la lista del comandi che puoi utilizzare usa il comando /info ')
+        return message.reply(`Ciao ${username}, benvenuto nel bot di ThiReMa! 
+        Usa il comando /login per effettuare l'autenticazione.
+        Per vedere la lista del comandi che puoi utilizzare usa il comando /info `)
     });
 
 
@@ -136,8 +138,6 @@ bot.command('login', message => {
                   }else if(typeNumber===2) {
                       type = "Amministratore";
                   }
-
-
 
                   return message.reply(`
                       1)Nome: ${name}
