@@ -73,7 +73,7 @@ bot.command('login', message => {
             }
         })
         .catch(err => {
-            console.log(err)
+            console.log(err);
             //console.log(err.status);
             if (err.response.status === 403) {
                 return message.reply("Rieffettua l'autenticazione usando il comando /login");
@@ -92,7 +92,7 @@ bot.command('login', message => {
                 const surname = data.surname;
                 const email = data.email;
                 const typeNumber = data.type;
-                let type = "Utente"
+                let type = "Utente";
                 if (typeNumber===1) {
                     type = "Moderatore";
                 } else if (typeNumber===2) {
