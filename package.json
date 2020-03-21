@@ -4,7 +4,9 @@
   "description": "Bot Telegram ThiReMa",
   "main": "bot.js",
   "scripts": {
-    "test": "jest --coverage --forceExit"
+    "test": "jest --coverage --forceExit",
+    "eslint-prettier-check": "eslint --print-config **.js | eslint-config-prettier-check",
+    "prettier-eslint": "eslint --fix *.js"
   },
   "author": "RedRoundRobin",
   "license": "ISC",
@@ -14,6 +16,10 @@
     "telegraf": "^3.36.0"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "jest": "^25.1.0",
     "prettier": "^2.0.0"
   }
