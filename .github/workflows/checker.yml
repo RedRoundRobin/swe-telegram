@@ -24,6 +24,10 @@ jobs:
         node-version: 12.x
     - name: Run dependencies installation
       run: npm ci
+    # - name: Run formatter and linter configuration check
+    #   run: npm run eslint-prettier-check
+    - name: Run project formatter and linter
+      run: npm run prettier-eslint
     - name: Run project build
       run: npm run build --if-present
     - name: Run project test 
