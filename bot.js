@@ -7,7 +7,7 @@ const tokenBot = "1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c";
 const bot = new Telegraf(tokenBot);
 // Richiesta per creazione server
 const http = require("http");
-const { parse } = require("querystring");
+// const { parse } = require("querystring");
 
 const server = http.createServer((req, res) => {
   // Request and response object
@@ -16,9 +16,9 @@ const server = http.createServer((req, res) => {
     req.on("data", (data) => {
       jsonRes += data.toString();
       console.log(JSON.parse(jsonRes));
-      let response = JSON.parse(jsonRes);
-      let chatId = response.chat_id;
-      let authCode = response.auth_code;
+      const response = JSON.parse(jsonRes);
+      const chatId = response.chat_id;
+      const authCode = response.auth_code;
       axios
         .post(
           `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=Ecco il tuo codice di autenticazione: ${authCode}`
@@ -83,7 +83,7 @@ bot.command("login", (message) => {
     })
     .catch((err) => {
       console.log(err);
-      //console.log(err.status);
+      // console.log(err.status);
       if (err.response.status === 403) {
         return message.reply(
           "Rieffettua l'autenticazione usando il comando /login"
