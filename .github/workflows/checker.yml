@@ -1,6 +1,3 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: SWE Telegram CI
 
 on:
@@ -17,20 +14,14 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
     - name: Checkout repo content
       uses: actions/checkout@v2
-    - name: Setup Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 12.x
     - name: Run dependencies installation
       run: npm ci
     - name: Run project build
@@ -39,7 +30,7 @@ jobs:
       run: npm test
       env:
         CI: true
-    - name: Coveralls
+    - name: Run Coveralls report
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
