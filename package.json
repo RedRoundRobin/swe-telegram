@@ -5,7 +5,7 @@
   "main": "bot.js",
   "scripts": {
     "test": "jest --coverage --forceExit",
-    "eslint-prettier-check": "eslint --print-config **.js | eslint-config-prettier-check",
+    "eslint-prettier-check": "eslint --print-config *.js | eslint-config-prettier-check",
     "prettier-eslint": "eslint --fix *.js"
   },
   "author": "RedRoundRobin",
