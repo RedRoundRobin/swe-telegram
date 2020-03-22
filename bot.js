@@ -10,7 +10,7 @@ const http = require("http");
 // const { parse } = require("querystring");
 
 const server = http.createServer((req, res) => {
-  // Request and response object
+  // Request and Response object
   if (req.method === "POST") {
     let jsonRes = "";
     req.on("data", (data) => {

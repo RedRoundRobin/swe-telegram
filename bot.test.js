@@ -1,4 +1,4 @@
-// NON RIMUOVERE LA RIGA REGUENTE //
+// NON RIMUOVERE LA RIGA SOTTOSTANTE //
 require("./bot");
 
 test("Extracts value from JSON formatted string", () => {
