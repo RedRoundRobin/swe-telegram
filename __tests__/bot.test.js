@@ -1,5 +1,5 @@
 // NON RIMUOVERE LA RIGA SOTTOSTANTE //
-require("./bot");
+require("../bot");
 
 test("Extracts value from JSON formatted string", () => {
   const num = 4;
