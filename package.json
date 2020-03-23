@@ -7,7 +7,9 @@
     "test": "jest --forceExit",
     "eslint-prettier-check": "eslint --print-config **.js | eslint-config-prettier-check",
     "prettier-eslint": "eslint --fix *.js",
-    "prettier-eslint-test": "eslint --fix __tests__/*.js"
+    "prettier-eslint-test": "eslint --fix __tests__/*.js",
+    "prettier-eslint-check": "eslint *.js",
+    "prettier-eslint-test-check": "eslint __tests__/*.js"
   },
   "author": "RedRoundRobin",
   "license": "ISC",
