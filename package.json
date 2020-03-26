@@ -1,0 +1,39 @@
+{
+  "name": "bot-telegram",
+  "version": "v0.0.1-dev",
+  "description": "Bot Telegram ThiReMa",
+  "main": "bot.js",
+  "scripts": {
+    "test": "jest --forceExit",
+    "eslint-prettier-check": "eslint --print-config **.js | eslint-config-prettier-check",
+    "prettier-eslint": "eslint --fix *.js",
+    "prettier-eslint-test": "eslint --fix __tests__/*.js",
+    "prettier-eslint-check": "eslint *.js",
+    "prettier-eslint-test-check": "eslint __tests__/*.js"
+  },
+  "author": "RedRoundRobin",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.2",
+    "telegraf": "^3.36.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^25.1.0",
+    "prettier": "^2.0.2"
+  },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,vue}",
+      "!**/node_modules/**",
+      "!**/coverage/**"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+node_modules
+.DS_Store
+
+.idea
+target/
+out/
+coverage/
+*.iws
+*.iml
+*.ipr
+
+Icon
+
+Icon
+
+.env
