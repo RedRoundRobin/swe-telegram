@@ -33,10 +33,13 @@ jobs:
     - name: Check project formatter and linter for tests
       run: npm run prettier-eslint-test-check
     - name: Run project build
+      env:
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       run: npm run build --if-present
     - name: Run project test 
       run: npm test
       env:
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         CI: true
     - name: Run Coveralls report
       uses: coverallsapp/github-action@master

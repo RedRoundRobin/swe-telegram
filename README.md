@@ -13,3 +13,20 @@
 ![Repository Checker](https://github.com/RedRoundRobin/swe-telegram/workflows/Repository%20Checker/badge.svg)
 
 [![Coverage Status](https://coveralls.io/repos/github/RedRoundRobin/swe-telegram/badge.svg?branch=develop)](https://coveralls.io/github/RedRoundRobin/swe-telegram?branch=develop)
+
+
+
+Link:
+t.me/ThiReMaBot
+
+Comandi:
+info - Comandi supportati
+login - Autenticazione al sistema ThiReMa
+status - Controllo dello status dell'utente
+
+
+Istruzioni per avviarlo:
+- installare node
+- entrare nella cartella con il terminale
+- $ npm install
+- $ node bot
