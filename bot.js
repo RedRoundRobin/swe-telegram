@@ -3,7 +3,10 @@ const Telegraf = require("telegraf");
 // Richieste http
 const axios = require("axios");
 // Tokenbot e creazione bot
-const tokenBot = "1120382460:AAG2TTBT-GqHcIfGzH_TYOvCZFI0pMEu88c";
+const dotenv = require("dotenv");
+dotenv.config();
+// tokenbot e creazione bot
+const tokenBot = process.env.BOT_TOKEN;
 const bot = new Telegraf(tokenBot);
 // Richiesta per creazione server
 const http = require("http");
