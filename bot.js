@@ -1,10 +1,13 @@
+require("dotenv").config();
 // Comandi telegram bot
 const Telegraf = require("telegraf");
 // Richieste http
 const axios = require("axios");
-// Tokenbot e creazione bot
+
 // tokenbot e creazione bot
 const tokenBot = process.env.BOT_TOKEN;
+console.log(tokenBot);
+
 const bot = new Telegraf(tokenBot);
 // Richiesta per creazione server
 const http = require("http");
