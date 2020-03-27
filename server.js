@@ -1,5 +1,7 @@
 // Richiesta per creazione server
 const http = require("http");
+// Richieste http
+const axios = require("axios");
 
 exports.botServer = http.createServer((req, res) => {
   // Request and Response object
