@@ -2,7 +2,7 @@
 const http = require("http");
 // Richieste http
 const axios = require("axios");
-
+const tokenBot = process.env.BOT_TOKEN;
 exports.botServer = http.createServer((req, res) => {
   // Request and Response object
   if (req.method === "POST") {
@@ -33,8 +33,9 @@ exports.botServer = http.createServer((req, res) => {
         const threshold = response.threshold;
         const valueType = response.value_type;
 
-        const message1 = `⚠️ Il sensore ${sensorId} del dispositivo ${deviceId} ha registrato un valore di `;
-        const message2 = `${sensorValue} ${valueType} superando la soglia di ${threshold}`;
+
+        const message1 = `Attenzione: il sensore ${sensorId} del dispositivo ${deviceId} ha registrato un valore di `;
+        const message2 = `${sensorValue} ${valueType} superando la soglia (${threshold})`;
         axios
           .post(
             `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=` +
@@ -45,9 +46,7 @@ exports.botServer = http.createServer((req, res) => {
             console.log("Messaggio inviato con successo");
           })
           .catch((err) => {
-            console.log(
-              "Errore " + err.response.status + " nell'invio del messaggio"
-            );
+            console.log("Errore: " + err + " nell'invio del messaggio");
           });
       }
     });
@@ -55,6 +54,5 @@ exports.botServer = http.createServer((req, res) => {
       console.log(JSON.parse(jsonRes));
       res.end("ok");
     });
-    console.log(jsonRes);
   }
 });
