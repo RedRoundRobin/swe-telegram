@@ -32,8 +32,6 @@ exports.botServer = http.createServer((req, res) => {
         const sensorValue = response.sensor_value;
         const threshold = response.threshold;
         const valueType = response.value_type;
-
-
         const message1 = `Attenzione: il sensore ${sensorId} del dispositivo ${deviceId} ha registrato un valore di `;
         const message2 = `${sensorValue} ${valueType} superando la soglia (${threshold})`;
         axios
