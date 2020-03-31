@@ -8,6 +8,8 @@
 
 ---
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RedRoundRobin_swe-telegram&metric=alert_status)](https://sonarcloud.io/dashboard?id=RedRoundRobin_swe-telegram)
+
 ![SWE Telegram CI](https://github.com/RedRoundRobin/swe-telegram/workflows/SWE%20Telegram%20CI/badge.svg) 
 
 ![Repository Checker](https://github.com/RedRoundRobin/swe-telegram/workflows/Repository%20Checker/badge.svg)
@@ -15,17 +17,19 @@
 [![Coverage Status](https://coveralls.io/repos/github/RedRoundRobin/swe-telegram/badge.svg?branch=develop)](https://coveralls.io/github/RedRoundRobin/swe-telegram?branch=develop)
 
 
+### Telegram link
 
-Link:
-t.me/ThiReMaBot
+- Link: [t.me/ThiReMaBot](t.me/ThiReMaBot)
 
-Comandi:
-info - Comandi supportati
-login - Autenticazione al sistema ThiReMa
-status - Controllo dello status dell'utente
+### Comandi Bot
+
+- info - Comandi supportati
+- login - Autenticazione al sistema ThiReMa
+- status - Controllo dello status dell'utente
 
 
-Istruzioni per avviarlo:
+#### Istruzioni di avvio
+
 - installare node
 - entrare nella cartella con il terminale
 - $ npm install
