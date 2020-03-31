@@ -12,7 +12,7 @@ const tokenBot = process.env.BOT_TOKEN;
 const sendMessage = (message, chatId) => {
   axios
     .post(
-      `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=Ecco il tuo codice di autenticazione: ${message}`
+      `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=${message}`
     )
     .then(() => {
       console.log("Messaggio inviato con successo");
@@ -44,8 +44,8 @@ const botServer = http.createServer((req, res) => {
         if (!checkChatId(chatId)) {
           console.log("Invalid chat id");
         } else {
-          const message = `Ecco il tuo codice di autenticazione: ${authCode}`;
-          sendMessage(message, chatId);
+          const authMessage = `Ecco il tuo codice di autenticazione: ${authCode}`;
+          sendMessage(authMessage, chatId);
         }
       } else if (response.reqType == "alert") {
         const chatsId = response.chat_id;
@@ -56,14 +56,14 @@ const botServer = http.createServer((req, res) => {
         const valueType = response.value_type;
         const messagePart1 = `Attenzione: il sensore ${sensorId} del dispositivo ${deviceId} ha registrato un valore di `;
         const messagePart2 = `${sensorValue} ${valueType} superando la soglia (${threshold})`;
-        const message = messagePart1 + messagePart2;
+        const alertMessage = messagePart1 + messagePart2;
         // eslint-disable-next-line guard-for-in
         for (const index in chatsId) {
           const chatId = chatsId[index];
           if (!checkChatId(chatId)) {
             console.log("Invalid chat id");
           } else {
-            sendMessage(message, chatId);
+            sendMessage(alertMessage, chatId);
           }
         }
       }
