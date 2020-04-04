@@ -2,7 +2,7 @@
 
 # Telegram Bot - ThiReMa
 
-:fire: Versione componente: `n/d` 
+:fire: Versione componente: `v0.1.0-dev` 
 
 :pushpin: Main repo: [swe-thirema](https://github.com/Maxelweb/swe-thirema)
 
