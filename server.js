@@ -14,8 +14,11 @@ const sendMessage = (message, chatId) => {
     .post(
       `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=${message}`
     )
-    .then(() => {
+    .then((res) => {
       console.log("Messaggio inviato con successo");
+      console.log(res.response.status);
+      console.log(res.data);
+      res.json("OK");
     })
     .catch((err) => {
       console.log(
