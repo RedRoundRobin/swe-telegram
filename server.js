@@ -19,6 +19,7 @@ const sendMessage = (message, chatId) => {
       console.log(res.response.status);
       console.log(res.data);
       res.json("OK");
+      return message.reply("OK");
     })
     .catch((err) => {
       console.log(

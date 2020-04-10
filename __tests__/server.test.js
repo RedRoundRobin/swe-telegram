@@ -1,5 +1,6 @@
 const { sendMessage, checkChatId } = require("../server");
 
+
 test("Send message to invalid chat id", () => {
   const message = "test";
   const chatId = "aaaaa";

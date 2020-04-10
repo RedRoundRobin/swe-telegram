@@ -1,5 +1,7 @@
 // test bot
 const { checkChatId, sendMessage } = require("./server");
+const { botLogin } = require("./commands/login");
+const bot = require("telegraf");
 
 // CHATID TEST
 // eslint-disable-next-line require-jsdoc
@@ -14,4 +16,8 @@ test("Chat id: ", () => {
 // SEND MESSAGE TEST da cambiare undefined
 test("sendMessage", () => {
   expect(sendMessage("ciao", "226026285")).toBe(undefined);
+});
+
+test("login", () => {
+  expect(botLogin(bot)).toBe(undefined);
 });
