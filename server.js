@@ -54,12 +54,12 @@ const botServer = http.createServer((req, res) => {
           sendMessage(authMessage, chatId);
         }
       } else if (response.reqType == "alert") {
-        const chatsId = response.chat_id;
-        const deviceId = response.device_id;
-        const sensorId = response.sensor_id;
-        const sensorValue = response.sensor_value;
+        const chatsId = response.chatId;
+        const deviceId = response.deviceId;
+        const sensorId = response.sensorId;
+        const sensorValue = response.sensorValue;
         const threshold = response.threshold;
-        const valueType = response.value_type;
+        const valueType = response.valueType;
         const messagePart1 = `Attenzione: il sensore ${sensorId} del dispositivo ${deviceId} ha registrato un valore di `;
         const messagePart2 = `${sensorValue} ${valueType} superando la soglia (${threshold})`;
         const alertMessage = messagePart1 + messagePart2;
