@@ -1,7 +1,10 @@
+require("dotenv").config();
+
 // Richiesta per creazione server
 const http = require("http");
 // Richieste http
 const axios = require("axios");
+
 const tokenBot = process.env.BOT_TOKEN;
 
 /**
