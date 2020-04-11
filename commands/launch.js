@@ -1,4 +1,4 @@
 const botLaunch = (bot) => {
-    bot.launch();
+  bot.launch();
 };
 module.exports.botLaunch = botLaunch;

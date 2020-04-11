@@ -24,15 +24,15 @@ const botStatus = (bot) => {
     - *Cognome:* ${surname}
     - *Email:* ${email}
     - *Tipo:* ${type}`
-                );
-            })
-            .catch((err) => {
-                if (err.response.status === 403) {
-                    message.reply("Rieffettua l'autenticazione usando il comando /login");
-                } else {
-                    message.reply("Errore nel controllo dei dati");
-                }
-            });
-    });
+        );
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          message.reply("Rieffettua l'autenticazione usando il comando /login");
+        } else {
+          message.reply("Errore nel controllo dei dati");
+        }
+      });
+  });
 };
 module.exports.botStatus = botStatus;

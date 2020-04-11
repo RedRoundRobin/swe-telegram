@@ -4,10 +4,39 @@ require("dotenv").config();
 const http = require("http");
 // Richieste http
 const axios = require("axios");
-// TokenBot
+
 const tokenBot = process.env.BOT_TOKEN;
 
-exports.botServer = http.createServer((req, res) => {
+/**
+ * Sending a message to a given Telegram chat id
+ * @param {string} message
+ * @param {string} chatId
+ */
+const sendMessage = (message, chatId) => {
+  axios
+    .post(
+      `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=${message}`
+    )
+    .then((res) => {
+      console.log("Messaggio inviato con successo");
+      console.log(res.response.status);
+      console.log(res.data);
+      res.json("OK");
+    })
+    .catch((err) => {
+      console.log(
+        "Errore " + err.response.status + " nell'invio del messaggio"
+      );
+    });
+};
+
+const checkChatId = (chatId) => {
+  const pattern = "^[0-9]{6,}$";
+  const regex = new RegExp(pattern);
+  return regex.test(chatId);
+};
+
+const botServer = http.createServer((req, res) => {
   // Request and Response object
   if (req.method === "POST") {
     let jsonRes = "";
@@ -15,25 +44,39 @@ exports.botServer = http.createServer((req, res) => {
       jsonRes += data.toString();
       console.log(JSON.parse(jsonRes));
       const response = JSON.parse(jsonRes);
-      const chatId = response.chat_id;
-      const authCode = response.auth_code;
-      axios
-        .post(
-          `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=Ecco il tuo codice di autenticazione: ${authCode}`
-        )
-        .then(() => {
-          console.log("Messaggio inviato con successo");
-        })
-        .catch((err) => {
-          console.log(
-            "Errore " + err.response.status + " nell'invio del messaggio"
-          );
-        });
+      if (response.reqType == "authentication") {
+        const authCode = response.authCode;
+        const chatId = response.chat_id;
+        if (!checkChatId(chatId)) {
+          console.log("Invalid chat id");
+        } else {
+          const authMessage = `Ecco il tuo codice di autenticazione: ${authCode}`;
+          sendMessage(authMessage, chatId);
+        }
+      } else if (response.reqType == "alert") {
+        const chatsId = response.chat_id;
+        const deviceId = response.device_id;
+        const sensorId = response.sensor_id;
+        const sensorValue = response.sensor_value;
+        const threshold = response.threshold;
+        const valueType = response.value_type;
+        const messagePart1 = `Attenzione: il sensore ${sensorId} del dispositivo ${deviceId} ha registrato un valore di `;
+        const messagePart2 = `${sensorValue} ${valueType} superando la soglia (${threshold})`;
+        const alertMessage = messagePart1 + messagePart2;
+        // eslint-disable-next-line guard-for-in
+        for (const index in chatsId) {
+          const chatId = chatsId[index];
+          if (!checkChatId(chatId)) {
+            console.log("Invalid chat id");
+          } else {
+            sendMessage(alertMessage, chatId);
+          }
+        }
+      }
     });
     req.on("end", () => {
-      console.log(JSON.parse(jsonRes));
       res.end("ok");
     });
-    console.log(jsonRes);
   }
 });
+module.exports = { botServer, checkChatId, sendMessage };
