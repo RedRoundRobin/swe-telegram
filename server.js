@@ -46,7 +46,7 @@ const botServer = http.createServer((req, res) => {
       const response = JSON.parse(jsonRes);
       if (response.reqType == "authentication") {
         const authCode = response.authCode;
-        const chatId = response.chat_id;
+        const chatId = response.chatId;
         if (!checkChatId(chatId)) {
           console.log("Invalid chat id");
         } else {
