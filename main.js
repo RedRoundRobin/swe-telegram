@@ -3,7 +3,7 @@ const Telegraf = require("telegraf");
 
 // Tokenbot e creazione bot
 // const tokenBot = process.env.BOT_TOKEN;
-const tokenBot = "1120382460:AAGy8CdhjdMxaS99K3za1Jxoqp-ayPuVC1w"
+const tokenBot = "1120382460:AAGy8CdhjdMxaS99K3za1Jxoqp-ayPuVC1w";
 const bot = new Telegraf(tokenBot);
 
 const server = require("./server");
