@@ -19,7 +19,7 @@ botInfo.botInfo(bot);
 botLogin.botLogin(bot);
 botStatus.botStatus(bot);
 
-server.botServer.listen(3000, "127.0.0.1");
+server.botServer.listen(3000, "core.host.redroundrobin.site");
 console.log("Server to port 3000");
 
 botLaunch.botLaunch(bot);
