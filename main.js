@@ -20,8 +20,7 @@ botInfo.botInfo(bot);
 botLogin.botLogin(bot);
 botStatus.botStatus(bot);
 
-server.botServer.listen(3000);
-
+botServer.listen(3000);
 console.log("Server to port 3000");
 
 botLaunch.botLaunch(bot);
