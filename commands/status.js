@@ -4,7 +4,7 @@ const axios = require("axios");
 const botStatus = (bot) => {
     bot.command("status", (message) => {
         axios
-            .get(`http://localhost:9999/status`)
+            .get(`http://core.host.redroundrobin.site:9999/status`)
             .then((res) => {
                 const data = res.data;
                 const name = data.name;
