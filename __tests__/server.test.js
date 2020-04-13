@@ -6,7 +6,7 @@ test("Send message to invalid chat id", () => {
   try {
     sendMessage(message, chatId);
   } catch (e) {
-    expect(e.message).toBe("Request failed with status code 400");
+    expect(e.message).toBe("Errore 400 nell'invio del messaggio");
   }
 });
 
@@ -17,6 +17,7 @@ test("Send message to valid chat id", () => {
     sendMessage(message, chatId);
     expect(message).toBe("test");
   } catch (e) {
+    console.log("Errore nell'invio del messaggio");
   }
 });
 
