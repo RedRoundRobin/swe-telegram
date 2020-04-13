@@ -1,5 +1,4 @@
 const { sendMessage, checkChatId } = require("../server");
-const http = require("http");
 
 test("Send message to invalid chat id", () => {
   const message = "test";
