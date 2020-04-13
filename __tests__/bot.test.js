@@ -1,6 +1,4 @@
 // test bot
-const { checkChatId, sendMessage } = require("../server");
-const botLaunch = require("../commands/launch");
 const { botStart } = require("../commands/start");
 const { botInfo } = require("../commands/info");
 const { botLogin } = require("../commands/login");
