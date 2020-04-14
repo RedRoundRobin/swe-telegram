@@ -6,7 +6,7 @@ const botLogin = (bot) => {
         const username = message.from.username;
         const chatId = message.from.id;
         axios
-            .post(`http://core.host.redroundrobin.site:9999/auth/telegram`, {
+            .post(`http://thirema_api:9999/auth/telegram`, {
                 telegramName: username,
                 telegramChat: chatId,
             })
