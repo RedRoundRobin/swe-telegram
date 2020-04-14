@@ -4,7 +4,7 @@ const axios = require("axios");
 const botStatus = (bot) => {
     bot.command("status", (message) => {
         axios
-            .get(`http://thirema_api:9999/status`)
+            .get(`http://thirema-api:9999/status`)
             .then((res) => {
                 const data = res.data;
                 const name = data.name;
