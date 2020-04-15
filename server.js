@@ -19,7 +19,7 @@ const sendMessage = (message, chatId) => {
     )
     .then((res) => {
       console.log("Messaggio inviato con successo");
-      console.log(res.response.status);
+      console.log(res.status);
       console.log(res.data);
       res.json("OK");
     })
