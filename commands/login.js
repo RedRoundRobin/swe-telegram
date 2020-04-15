@@ -6,7 +6,7 @@ const botLogin = (bot) => {
     const username = message.from.username;
     const chatId = message.from.id;
     axios
-      .post(`http://localhost:9999/auth/telegram`, {
+      .post(`http://thirema-api:9999/auth/telegram`, {
         telegramName: username,
         telegramChat: chatId,
       })
@@ -30,7 +30,7 @@ const botLogin = (bot) => {
       .catch((err) => {
         console.log(err);
         // console.log(err.status);
-        if (err.response.status === 403) {
+        if (err.response != null && err.response.status === 403) {
           return message.reply(
             "Rieffettua l'autenticazione usando il comando /login"
           );

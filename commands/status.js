@@ -6,7 +6,7 @@ const botStatus = (bot) => {
     const username = message.from.username;
     console.log(username);
     axios
-      .get(`http://localhost:9999/users?telegramName=` + username)
+      .get(`http://thirema-api:9999/users?telegramName=` + username)
       .then((res) => {
         console.log(res.data);
         const data = res.data[0];
@@ -30,7 +30,7 @@ const botStatus = (bot) => {
         );
       })
       .catch((err) => {
-        if (err.response.status === 403) {
+        if (err.response != null && err.response.status === 403) {
           message.reply("Rieffettua l'autenticazione usando il comando /login");
         } else {
           message.reply("Errore nel controllo dei dati");
