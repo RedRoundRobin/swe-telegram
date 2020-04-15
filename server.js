@@ -54,18 +54,28 @@ const botServer = http.createServer((req, res) => {
           sendMessage(authMessage, chatId);
         }
       } else if (response.reqType == "alert") {
-        const chatsId = response.chatId;
-        const deviceId = response.deviceId;
-        const sensorId = response.sensorId;
-        const sensorValue = response.sensorValue;
-        const threshold = response.threshold;
-        const valueType = response.valueType;
+        const chatIds = response.telegramChatIds;
+        const deviceId = response.realDeviceId;
+        const sensorId = response.realSensorId;
+        const sensorValue = response.currentValue;
+        const threshold = response.currentThreshold;
+        let valueType;
+        switch (response.currentThresholdType) {
+          case 0:
+            valueType = "superiore";
+            break;
+          case 1:
+            valueType = "inferiore";
+            break;
+          case 2:
+            valueType = "uguale";
+        }
         const messagePart1 = `Attenzione: il sensore ${sensorId} del dispositivo ${deviceId} ha registrato un valore di `;
-        const messagePart2 = `${sensorValue} ${valueType} superando la soglia (${threshold})`;
+        const messagePart2 = `${sensorValue} ${valueType} alla soglia (${threshold})`;
         const alertMessage = messagePart1 + messagePart2;
         // eslint-disable-next-line guard-for-in
-        for (const index in chatsId) {
-          const chatId = chatsId[index];
+        for (const index in chatIds) {
+          const chatId = chatIds[index];
           if (!checkChatId(chatId)) {
             console.log("Invalid chat id");
           } else {
