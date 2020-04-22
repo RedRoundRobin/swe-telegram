@@ -38,5 +38,14 @@
 
 #### Comandi per code style JS
 
+- Check:
+`npm run prettier-eslint-check`
+`npm run prettier-eslint-test-check`
+- Autofix:
 `npm run prettier-eslint`
 `npm run prettier-eslint-test`
+
+
+#### Comandi per i test JS
+
+`npm test`
