@@ -34,3 +34,9 @@
 - entrare nella cartella con il terminale
 - $ npm install
 - $ node bot
+
+
+#### Comandi per code style JS
+
+`npm run prettier-eslint`
+`npm run prettier-eslint-test`
