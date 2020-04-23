@@ -1,10 +1,11 @@
-// Richieste http
+require("dotenv").config();
+const linkAPI = process.env.LINK_API;
 const axios = require("axios");
 
 const botStatus = (bot) => {
     bot.command("status", (message) => {
         axios
-            .get(`http://core.host.redroundrobin.site:9999/status`)
+            .get(`${linkAPI}/status`)
             .then((res) => {
                 const data = res.data;
                 const name = data.name;
