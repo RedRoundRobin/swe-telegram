@@ -8,7 +8,7 @@ const botStatus = (bot) => {
     const username = message.from.username;
     console.log(username);
     axios
-      .get(`http://thirema-api:9999/users?telegramName=` + username)
+      .get(`${linkAPI}/users?telegramName=` + username)
       .then((res) => {
         console.log(res.data);
         const data = res.data[0];

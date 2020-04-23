@@ -1,12 +1,13 @@
 // Richieste http
 const axios = require("axios");
+const linkAPI = process.env.LINK_API;
 
 const botLogin = (bot) => {
   bot.command("login", (message) => {
     const username = message.from.username;
     const chatId = message.from.id;
     axios
-      .post(`http://thirema-api:9999/auth/telegram`, {
+      .post(`${linkAPI}/auth/telegram`, {
         telegramName: username,
         telegramChat: chatId,
       })
