@@ -1,21 +1,10 @@
-require("dotenv").config();
-
-// Richiesta per creazione server
 const http = require("http");
-// Richieste http
 const axios = require("axios");
 
-const tokenBot = process.env.BOT_TOKEN;
-
-/**
- * Sending a message to a given Telegram chat id
- * @param {string} message
- * @param {string} chatId
- */
 const sendMessage = (message, chatId) => {
   axios
     .post(
-      `https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${chatId}&text=${message}`
+      `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${message}`
     )
     .then((res) => {
       console.log("Messaggio inviato con successo");
@@ -44,7 +33,7 @@ const botServer = http.createServer((req, res) => {
       jsonRes += data.toString();
       console.log(JSON.parse(jsonRes));
       const response = JSON.parse(jsonRes);
-      if (response.reqType == "authentication") {
+      if (response.reqType === "authentication") {
         const authCode = response.authCode;
         const chatId = response.chatId;
         if (!checkChatId(chatId)) {
@@ -53,7 +42,7 @@ const botServer = http.createServer((req, res) => {
           const authMessage = `Ecco il tuo codice di autenticazione: ${authCode}`;
           sendMessage(authMessage, chatId);
         }
-      } else if (response.reqType == "alert") {
+      } else if (response.reqType === "alert") {
         const chatIds = response.telegramChatIds;
         const deviceId = response.realDeviceId;
         const sensorId = response.realSensorId;

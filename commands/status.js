@@ -1,13 +1,9 @@
-require("dotenv").config();
-const linkAPI = process.env.LINK_API;
-const axios = require("axios");
-
-const botStatus = (bot) => {
+const botStatus = (bot, axios) => {
   bot.command("status", (message) => {
     const username = message.from.username;
     console.log(username);
     axios
-      .get(`${linkAPI}/users?telegramName=` + username)
+      .get(`${process.env.LINK_API}/users?telegramName=` + username)
       .then((res) => {
         const data = res.data[0];
         const name = data.name;
@@ -31,7 +27,9 @@ const botStatus = (bot) => {
       })
       .catch((err) => {
         if (err.response != null && err.response.status === 403) {
-          message.reply("Rieffettua l'autenticazione usando il comando /login");
+          message.reply(
+            "Effettua prima l'autenticazione usando il comando /login"
+          );
         } else {
           message.reply("Errore nel controllo dei dati");
         }
