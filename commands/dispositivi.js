@@ -23,8 +23,7 @@ const botDispositivi = (bot) => {
         ],
       },
     };
-    console.log(message.from.id);
-    bot.sendMessage(message.from.id, "Message text", opts);
+    bot.telegram.sendMessage(message.from.id, "Message text", opts);
   });
 };
 module.exports.botDispositivi = botDispositivi;
