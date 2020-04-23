@@ -1,4 +1,3 @@
-
 const botInfo = (bot) => {
   bot.command("info", ({ replyWithMarkdown }) => {
     replyWithMarkdown(`
