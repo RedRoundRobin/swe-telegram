@@ -1,16 +1,12 @@
 require("dotenv").config();
-const linkAPI = process.env.LINK_API;
 const axios = require("axios");
 
 const botStatus = (bot) => {
-
   bot.command("status", (message) => {
     const username = message.from.username;
-    console.log(username);
     axios
-      .get(`http://thirema-api:9999/users?telegramName=` + username)
+      .get(`${process.env.URL_API}/users?telegramName=${username}`)
       .then((res) => {
-        console.log(res.data);
         const data = res.data[0];
         const name = data.name;
         const surname = data.surname;
@@ -33,7 +29,9 @@ const botStatus = (bot) => {
       })
       .catch((err) => {
         if (err.response != null && err.response.status === 403) {
-          message.reply("Rieffettua l'autenticazione usando il comando /login");
+          message.reply(
+            "Effettua prima l'autenticazione usando il comando /login"
+          );
         } else {
           message.reply("Errore nel controllo dei dati");
         }

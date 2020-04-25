@@ -1,4 +1,4 @@
-const { sendMessage, checkChatId } = require("../server");
+const { sendMessage, checkChatId } = require("../utils/server");
 
 test("Send message to invalid chat id", () => {
   const message = "test";
