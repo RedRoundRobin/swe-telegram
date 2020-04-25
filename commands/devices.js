@@ -13,15 +13,20 @@ const botDevices = (bot) => {
           const typeNumber = data.type;
           if (typeNumber === 2) {
             admin = true;
-            console.log("IS admin");
-          }
-          else {
+            console.log("IS ADMIN")
+          } else {
             admin = false;
-            console.log("IS not admin");
+            return message.reply("Devi essere amministratore per vedere la lista dispositivi")
           }
         })
-        .catch(() => {
-          return message.reply(`Errore verifica account, esegui il comando /login`);
+        .catch((err) => {
+          if (err.response.status === 403) {
+            admin = false;
+            return message.reply("Devi essere amministratore per vedere la lista dispositivi")
+          } else {
+            admin = false;
+            return message.reply(`Esegui di nuovo il comando /login`);
+          }
         });
       const typeUser = await resType;
       return typeUser;
@@ -41,7 +46,6 @@ const botDevices = (bot) => {
             })
             .catch((err) => {
               admin = false;
-              return message.reply("Devi essere un amministratore");
             });
           const buttonsData = await response;
           return buttonsData;
@@ -62,8 +66,6 @@ const botDevices = (bot) => {
               // `sended` is the sent message.
             });
         });
-      } else {
-        return message.reply("Devi essere un amministratore");
       }
     });
   });
