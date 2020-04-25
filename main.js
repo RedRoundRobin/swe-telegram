@@ -1,8 +1,9 @@
 const { axios } = require("./utils/config");
+require("dotenv").config();
 const Telegraf = require("telegraf");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-const botServer = require("./utils/server");
+const { botServer } = require("./utils/server");
 const cmdStart = require("./commands/start");
 const cmdInfo = require("./commands/info");
 const cmdLogin = require("./commands/login");

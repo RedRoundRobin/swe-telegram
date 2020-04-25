@@ -1,3 +1,4 @@
+require("dotenv").config();
 const botLogin = (bot, axios) => {
   bot.command("login", (message) => {
     const username = message.from.username;

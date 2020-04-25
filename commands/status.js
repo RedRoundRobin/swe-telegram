@@ -1,3 +1,4 @@
+require("dotenv").config();
 const botStatus = (bot, axios) => {
   bot.command("status", (message) => {
     const username = message.from.username;
