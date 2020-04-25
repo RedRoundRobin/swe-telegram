@@ -26,10 +26,8 @@ const botDevices = (bot, axios, auth) => {
   bot.command("devices", (message) => {
     const username = message.from.username;
     const getType = async () => {
-
       await auth.jwtAuth(axios, message);
-
-      const resType = await axios
+      return await axios
         .get(`${process.env.URL_API}/users?telegramName=${username}`)
         .then((res) => {
           const data = res.data[0];
@@ -48,30 +46,29 @@ const botDevices = (bot, axios, auth) => {
           admin = false;
           return message.reply(`Esegui di nuovo il comando /login`);
         });
-      const typeUser = await resType;
-      return typeUser;
     };
     getType().then(() => {
       console.log(getType());
       if (admin) {
         const buttonList = [];
         const getButtons = async () => {
-          const response = await axios
+          return await axios
             .get(`${process.env.URL_API}/devices`)
             .then((res) => {
               admin = true;
               const devices = res.data;
               devices.forEach((device) => {
                 buttonList.push([
-                  { text: device.name, callback_data: "callBackFunction(message,bot)" },
+                  {
+                    text: device.name,
+                    callback_data: "callBackFunction(message, bot)",
+                  },
                 ]);
               });
             })
             .catch(() => {
               admin = false;
             });
-          const buttonsData = await response;
-          return buttonsData;
         };
         getButtons().then(() => {
           const options = {
