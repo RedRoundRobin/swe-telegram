@@ -3,10 +3,10 @@ const axios = require("axios");
 
 const botCommands = [
   { command: "info", description: "Lista dei comandi del bot e informazioni" },
-  { command: "login", description: "Autenticazione al sistema" },
-  { command: "status", description: "Controllo dello status dell'utente" },
+  { command: "login", description: "Avvio e autenticazione al sistema" },
+  { command: "info", description: "Controllo delle informazioni dell'utente" },
   {
-    command: "dispositivi",
+    command: "devices",
     description: "[Admin] Visualizza lista dispositivi a cui inviare input",
   },
 ];
@@ -16,8 +16,10 @@ axios
     commands: botCommands,
   })
   .then(() => {
-    console.log("Comandi caricati");
+    console.log("[Telegram] Info comandi caricati!");
   })
   .catch(() => {
-    console.log("Errore caricamento comandi");
+    console.log("[Telegram] Errore caricamento comandi");
   });
+
+module.exports.axios = axios;

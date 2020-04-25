@@ -1,8 +1,8 @@
 // test bot
 const { botStart } = require("../commands/start");
-const { botInfo } = require("../commands/info");
+const { botInfo } = require("../commands/help");
 const { botLogin } = require("../commands/login");
-const { botStatus } = require("../commands/status");
+const { botStatus } = require("../commands/info");
 
 const Telegraf = require("telegraf");
 const tokenBot = process.env.BOT_TOKEN;

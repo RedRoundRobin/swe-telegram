@@ -1,5 +1,3 @@
-require("dotenv").config();
-const axios = require("axios");
 let admin = false;
 
 const callBackFunction = (message,bot) => {
@@ -14,7 +12,7 @@ const callBackFunction = (message,bot) => {
   };
   console.log(options);
   bot.telegram
-    .sendMessage(message.chat.id, "Segli l'opzione", options)
+    .sendMessage(message.chat.id, "Scegli l'opzione", options)
     .then(function (sended) {
       // `sended` is the sent message.
       console.log("FATTO");
@@ -24,12 +22,13 @@ const callBackFunction = (message,bot) => {
     });
 };
 
-const botDevices = (bot) => {
-  let message2;
+const botDevices = (bot, axios, auth) => {
   bot.command("devices", (message) => {
-    message2=message;
     const username = message.from.username;
     const getType = async () => {
+
+      await auth.jwtAuth(axios, message);
+
       const resType = await axios
         .get(`${process.env.URL_API}/users?telegramName=${username}`)
         .then((res) => {
@@ -64,7 +63,7 @@ const botDevices = (bot) => {
               const devices = res.data;
               devices.forEach((device) => {
                 buttonList.push([
-                  { text: device.name, callback_data: "callBackFunction(message2,bot)" },
+                  { text: device.name, callback_data: "callBackFunction(message,bot)" },
                 ]);
               });
             })
