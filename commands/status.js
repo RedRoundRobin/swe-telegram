@@ -33,7 +33,7 @@ const botStatus = (bot) => {
             "Effettua prima l'autenticazione usando il comando /login"
           );
         } else {
-          message.reply("Errore nel controllo dei dati");
+          message.reply("Errore nel controllo dei dati!");
         }
       });
   });
