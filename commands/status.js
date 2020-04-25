@@ -1,10 +1,11 @@
 require("dotenv").config();
-const botStatus = (bot, axios) => {
+const axios = require("axios");
+
+const botStatus = (bot) => {
   bot.command("status", (message) => {
     const username = message.from.username;
-    console.log(username);
     axios
-      .get(`${process.env.LINK_API}/users?telegramName=` + username)
+      .get(`${process.env.URL_API}/users?telegramName=${username}`)
       .then((res) => {
         const data = res.data[0];
         const name = data.name;

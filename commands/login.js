@@ -1,5 +1,7 @@
 require("dotenv").config();
-const botLogin = (bot, axios) => {
+const axios = require("axios");
+
+const botLogin = (bot) => {
   bot.command("login", (message) => {
     const username = message.from.username;
     const chatId = message.from.id;
