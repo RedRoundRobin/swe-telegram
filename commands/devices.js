@@ -1,6 +1,6 @@
 let admin = false;
 
-const callBackFunction = (message,bot) => {
+const callBackFunction = (message, bot) => {
   console.log(message.chat.id);
   const options = {
     reply_markup: JSON.stringify({
@@ -18,7 +18,7 @@ const callBackFunction = (message,bot) => {
       console.log("FATTO");
     })
     .catch(() => {
-      console.log("Errore");
+      console.log("Errore nell'invio del messaggio");
     });
 };
 
@@ -34,7 +34,6 @@ const botDevices = (bot, axios, auth) => {
           const typeNumber = data.type;
           if (typeNumber === 2) {
             admin = true;
-            console.log("IS ADMIN");
           } else {
             admin = false;
             return message.reply(
@@ -42,13 +41,12 @@ const botDevices = (bot, axios, auth) => {
             );
           }
         })
-        .catch((err) => {
+        .catch(() => {
           admin = false;
           return message.reply(`Esegui di nuovo il comando /login`);
         });
     };
     getType().then(() => {
-      console.log(getType());
       if (admin) {
         const buttonList = [];
         const getButtons = async () => {
@@ -61,7 +59,7 @@ const botDevices = (bot, axios, auth) => {
                 buttonList.push([
                   {
                     text: device.name,
-                    callback_data: "callBackFunction(message, bot)",
+                    callback_query: "1",
                   },
                 ]);
               });
@@ -74,6 +72,9 @@ const botDevices = (bot, axios, auth) => {
           const options = {
             reply_markup: JSON.stringify({
               keyboard: buttonList,
+              one_time_keyboard: true,
+              resize_keyboard: true,
+              callback_data: "click",
             }),
           };
           bot.telegram
@@ -82,12 +83,19 @@ const botDevices = (bot, axios, auth) => {
               "Ecco la lista dei dispositivi",
               options
             )
-            .then(function (sended) {
-              // `sended` is the sent message.
+            .then((sent) => {
+              // sent is the message
             });
         });
       }
     });
+  });
+  bot.on("callback_query", (callbackQuery) => {
+    const msg = callbackQuery.message;
+    console.log("sono qui")
+    bot.telegram
+      .answerCallbackQuery(callbackQuery.id)
+      .then(() => bot.sendMessage(msg.chat.id, "You clicked!"));
   });
 };
 module.exports.botDevices = botDevices;

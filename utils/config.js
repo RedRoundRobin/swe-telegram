@@ -2,7 +2,7 @@ require("dotenv").config();
 const axios = require("axios");
 
 const botCommands = [
-  { command: "info", description: "Lista dei comandi del bot e informazioni" },
+  { command: "help", description: "Lista dei comandi del bot e informazioni" },
   { command: "login", description: "Avvio e autenticazione al sistema" },
   { command: "info", description: "Controllo delle informazioni dell'utente" },
   {
