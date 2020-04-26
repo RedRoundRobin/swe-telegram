@@ -35,14 +35,15 @@ const botDevices = (bot, axios, auth) => {
             .then((res) => {
               admin = true;
               const devices = res.data;
-              // text: device.name,
               devices.forEach((device) => {
-                deviceList.push([
-                  {
-                    text: device.name,
-                  },
-                ]);
+                deviceList.push(
+                  Markup.callbackButton(
+                    "device_" + device.name,
+                    device.name
+                  )
+                );
               });
+              deviceList.push(Markup.callbackButton("bottone senza risposta", "ciaone"));
             })
             .catch(() => {
               admin = false;
@@ -53,11 +54,15 @@ const botDevices = (bot, axios, auth) => {
         });
       }
     });
+
     return message.reply(
       "random example",
-      Markup.keyboard(deviceList).oneTime().resize().extra()
+      Markup.keyboard(deviceList)
+        .oneTime()
+        .resize()
+        .extra()
     );
-    console.log(deviceList);
+    // console.log(deviceList);
     // reply(
     //   "Seleziona il dispositivo a cui inviare un comando",
     //   Markup.keyboard(deviceList).oneTime().resize().extra()
@@ -79,13 +84,17 @@ const botDevices = (bot, axios, auth) => {
     //   );
     // });
   });
-  bot.action("WATER-MACHINE", (ctx, next) => {
-    return ctx
+  bot.hears(/^(device_)(.*)$/gi, (ctx) => {
+    console.log("Robe");
+    /* return ctx
       .reply(
-        "Seleziona il sensore",
+        "Seleziona il sensore:",
         Extra.markup(Markup.keyboard(["sensore1", "sensore2", "sensore3"]))
       )
       .then(() => next());
+       */
+
+    return ctx.reply(`Oh, ` + ctx.match[0] + ` Great choice`);
   });
 };
 module.exports.botDevices = botDevices;
