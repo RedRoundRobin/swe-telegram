@@ -1,29 +1,10 @@
+const Markup = require("telegraf/markup");
+const Extra = require("telegraf/extra");
 let admin = false;
 
-const callBackFunction = (message, bot) => {
-  console.log(message.chat.id);
-  const options = {
-    reply_markup: JSON.stringify({
-      keyboard: [
-        [{ text: "Attiva sensore", callback_data: "1" }],
-        [{ text: "Disattiva sensore", callback_data: "2" }],
-      ],
-    }),
-  };
-  console.log(options);
-  bot.telegram
-    .sendMessage(message.chat.id, "Scegli l'opzione", options)
-    .then(function (sended) {
-      // `sended` is the sent message.
-      console.log("FATTO");
-    })
-    .catch(() => {
-      console.log("Errore nell'invio del messaggio");
-    });
-};
-
 const botDevices = (bot, axios, auth) => {
-  bot.command("devices", (message) => {
+  let deviceList = [];
+  bot.command("devices", ({ message, reply }) => {
     const username = message.from.username;
     const getType = async () => {
       await auth.jwtAuth(axios, message);
@@ -48,7 +29,6 @@ const botDevices = (bot, axios, auth) => {
     };
     getType().then(() => {
       if (admin) {
-        const buttonList = [];
         const getButtons = async () => {
           return await axios
             .get(`${process.env.URL_API}/devices`)
@@ -56,10 +36,9 @@ const botDevices = (bot, axios, auth) => {
               admin = true;
               const devices = res.data;
               devices.forEach((device) => {
-                buttonList.push([
+                deviceList.push([
                   {
                     text: device.name,
-                    callback_query: "1",
                   },
                 ]);
               });
@@ -69,33 +48,23 @@ const botDevices = (bot, axios, auth) => {
             });
         };
         getButtons().then(() => {
-          const options = {
-            reply_markup: JSON.stringify({
-              keyboard: buttonList,
-              one_time_keyboard: true,
-              resize_keyboard: true,
-              callback_data: "click",
-            }),
-          };
-          bot.telegram
-            .sendMessage(
-              message.chat.id,
-              "Ecco la lista dei dispositivi",
-              options
-            )
-            .then((sent) => {
-              // sent is the message
-            });
+          console.log("Lista dispositivi caricata correttamente");
         });
       }
     });
-  });
-  bot.on("callback_query", (callbackQuery) => {
-    const msg = callbackQuery.message;
-    console.log("sono qui")
-    bot.telegram
-      .answerCallbackQuery(callbackQuery.id)
-      .then(() => bot.sendMessage(msg.chat.id, "You clicked!"));
+
+    reply(
+      "Seleziona il dispositivo a cui inviare un comando",
+      Markup.keyboard(deviceList).oneTime().resize().extra()
+    );
+    deviceList = [];
+    
+    bot.hears("WATER-MACHINE", (ctx) => {
+      return ctx.reply(
+        "Seleziona il sensore",
+        Extra.markup(Markup.keyboard(["sensore1", "sensore2", "sensore3"]))
+      );
+    });
   });
 };
 module.exports.botDevices = botDevices;
