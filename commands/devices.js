@@ -4,7 +4,7 @@ let admin = false;
 
 const botDevices = (bot, axios, auth) => {
   let deviceList = [];
-  bot.command("devices", ({ message, reply }) => {
+  bot.command("devices", (message) => {
     const username = message.from.username;
     const getType = async () => {
       await auth.jwtAuth(axios, message);
@@ -35,6 +35,7 @@ const botDevices = (bot, axios, auth) => {
             .then((res) => {
               admin = true;
               const devices = res.data;
+              // text: device.name,
               devices.forEach((device) => {
                 deviceList.push([
                   {
@@ -52,19 +53,39 @@ const botDevices = (bot, axios, auth) => {
         });
       }
     });
-
-    reply(
-      "Seleziona il dispositivo a cui inviare un comando",
+    return message.reply(
+      "random example",
       Markup.keyboard(deviceList).oneTime().resize().extra()
     );
+    console.log(deviceList);
+    // reply(
+    //   "Seleziona il dispositivo a cui inviare un comando",
+    //   Markup.keyboard(deviceList).oneTime().resize().extra()
+    // );
     deviceList = [];
-    
-    bot.hears("WATER-MACHINE", (ctx) => {
-      return ctx.reply(
+    // bot.action("WATER-MACHINE", (ctx, next) => {
+    //   return ctx
+    //     .reply(
+    //       "Seleziona il sensore",
+    //       Extra.markup(Markup.keyboard(["sensore1", "sensore2", "sensore3"]))
+    //     )
+    //     .then(() => next());
+    // })
+
+    // bot.hears("WATER-MACHINE", (ctx) => {
+    //   return ctx.reply(
+    //     "Seleziona il sensore",
+    //     Extra.markup(Markup.keyboard(["sensore1", "sensore2", "sensore3"]))
+    //   );
+    // });
+  });
+  bot.action("WATER-MACHINE", (ctx, next) => {
+    return ctx
+      .reply(
         "Seleziona il sensore",
         Extra.markup(Markup.keyboard(["sensore1", "sensore2", "sensore3"]))
-      );
-    });
+      )
+      .then(() => next());
   });
 };
 module.exports.botDevices = botDevices;
