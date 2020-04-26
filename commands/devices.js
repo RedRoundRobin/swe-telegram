@@ -37,13 +37,12 @@ const botDevices = (bot, axios, auth) => {
               const devices = res.data;
               devices.forEach((device) => {
                 deviceList.push(
-                  Markup.callbackButton(
-                    "device_" + device.name,
-                    device.name
-                  )
+                  Markup.callbackButton(`device_${device.name}`, device.name)
                 );
               });
-              deviceList.push(Markup.callbackButton("bottone senza risposta", "ciaone"));
+              deviceList.push(
+                Markup.callbackButton("bottone senza risposta", "ciaone")
+              );
             })
             .catch(() => {
               admin = false;
@@ -55,34 +54,11 @@ const botDevices = (bot, axios, auth) => {
       }
     });
 
-    return message.reply(
+    message.reply(
       "random example",
-      Markup.keyboard(deviceList)
-        .oneTime()
-        .resize()
-        .extra()
+      Markup.keyboard(deviceList).oneTime().resize().extra()
     );
-    // console.log(deviceList);
-    // reply(
-    //   "Seleziona il dispositivo a cui inviare un comando",
-    //   Markup.keyboard(deviceList).oneTime().resize().extra()
-    // );
     deviceList = [];
-    // bot.action("WATER-MACHINE", (ctx, next) => {
-    //   return ctx
-    //     .reply(
-    //       "Seleziona il sensore",
-    //       Extra.markup(Markup.keyboard(["sensore1", "sensore2", "sensore3"]))
-    //     )
-    //     .then(() => next());
-    // })
-
-    // bot.hears("WATER-MACHINE", (ctx) => {
-    //   return ctx.reply(
-    //     "Seleziona il sensore",
-    //     Extra.markup(Markup.keyboard(["sensore1", "sensore2", "sensore3"]))
-    //   );
-    // });
   });
   bot.hears(/^(device_)(.*)$/gi, (ctx) => {
     console.log("Robe");
@@ -94,7 +70,7 @@ const botDevices = (bot, axios, auth) => {
       .then(() => next());
        */
 
-    return ctx.reply(`Oh, ` + ctx.match[0] + ` Great choice`);
+    return ctx.reply(`Oh, ${ctx.match[0]} Great choice`);
   });
 };
 module.exports.botDevices = botDevices;
