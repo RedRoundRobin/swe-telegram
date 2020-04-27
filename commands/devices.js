@@ -1,12 +1,12 @@
 const Markup = require("telegraf/markup");
-const Extra = require("telegraf/extra");
+// const Extra = require("telegraf/extra");
 let admin = false;
 
 const botDevices = (bot, axios, auth) => {
-  const deviceList = [];
+  let deviceList = [];
   bot.command("devices", (message) => {
     const username = message.from.username;
-    const getType = async () => {
+    const getTypeUser = async () => {
       await auth.jwtAuth(axios, message);
       return await axios
         .get(`${process.env.URL_API}/users?telegramName=${username}`)
@@ -27,7 +27,7 @@ const botDevices = (bot, axios, auth) => {
           return message.reply(`Esegui di nuovo il comando /login`);
         });
     };
-    getType().then(() => {
+    getTypeUser().then(() => {
       if (admin) {
         const getButtons = async () => {
           return await axios
@@ -43,9 +43,9 @@ const botDevices = (bot, axios, auth) => {
                   )
                 );
               });
-              deviceList.push(
-                Markup.callbackButton("bottone senza risposta", "ciaone")
-              );
+              // deviceList.push(
+              //   Markup.callbackButton("bottone senza risposta", "ciaone")
+              // );
             })
             .catch(() => {
               admin = false;
@@ -53,16 +53,49 @@ const botDevices = (bot, axios, auth) => {
         };
         getButtons(message).then(() => {
           console.log("Lista dispositivi caricata correttamente");
-          message.reply("", Markup.removeKeyboard(true));
+          Markup.removeKeyboard();
           message.reply(
-            "Ecco la lista dei dispositivi a quali puoi inviare un comando:",
+            "Seleziona il dispositivo a cui inviare un comando:",
             Markup.keyboard(deviceList).oneTime().resize().extra()
           );
+          deviceList = [];
         });
       }
     });
   });
-  bot.hears(/^\d(_)(.*)$/gi, (message) => {
+  // user has selected to switch on one sensor
+  bot.hears(/^\d(_)+\d(_)(Attiva)/g, (message) => {
+    const devSensID = message.match[0].match(/\d/gi);
+    Markup.removeKeyboard();
+    message.reply(
+      `Il sensore ${devSensID[1]} del dispositivo ${devSensID[0]} è stato attivato con successo!`
+    );
+  });
+  // user has selected to switch off one sensor
+  bot.hears(/^\d(_)+\d(_)(Disattiva)/g, (message) => {
+    const devSensID = message.match[0].match(/\d/gi);
+    Markup.removeKeyboard();
+    message.reply(
+      `Il sensore ${devSensID[1]} del dispositivo ${devSensID[0]} è stato disattivato con successo!`
+    );
+  });
+  // user has selected one sensor
+  bot.hears(/^\d(_)+\d(_)(.*)/g, (message) => {
+    const sensorID = message.match[0].match(/\d/gi);
+    Markup.removeKeyboard();
+    message.reply(
+      "Seleziona l'opzione:",
+      Markup.keyboard([
+        `${sensorID[0]}_${sensorID[1]}_Attiva`,
+        `${sensorID[0]}_${sensorID[1]}_Disattiva`,
+      ])
+        .oneTime()
+        .resize()
+        .extra()
+    );
+  });
+  // user has selected one device
+  bot.hears(/^\d(_)(.*)/g, (message) => {
     const deviceID = message.match[0].match(/^\d/gi);
     let sensorsList = [];
     const getButtons = async () => {
@@ -73,7 +106,7 @@ const botDevices = (bot, axios, auth) => {
           sensors.forEach((sensor) => {
             sensorsList.push(
               Markup.callbackButton(
-                `${sensor.sensorId}_${sensor.type}`,
+                `${deviceID}_${sensor.sensorId}_${sensor.type}`,
                 sensor.type
               )
             );
@@ -82,7 +115,7 @@ const botDevices = (bot, axios, auth) => {
     };
     getButtons(message).then(() => {
       console.log("Lista sensori caricata correttamente");
-      message.reply("", Markup.removeKeyboard(true));
+      Markup.removeKeyboard();
       message.reply(
         "Seleziona il sensore:",
         Markup.keyboard(sensorsList).oneTime().resize().extra()
