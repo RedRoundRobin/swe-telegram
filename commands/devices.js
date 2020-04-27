@@ -3,7 +3,7 @@ const Extra = require("telegraf/extra");
 let admin = false;
 
 const botDevices = (bot, axios, auth) => {
-  let deviceList = [];
+  const deviceList = [];
   bot.command("devices", (message) => {
     const username = message.from.username;
     const getType = async () => {
@@ -37,7 +37,10 @@ const botDevices = (bot, axios, auth) => {
               const devices = res.data;
               devices.forEach((device) => {
                 deviceList.push(
-                  Markup.callbackButton(`device_${device.name}`, device.name)
+                  Markup.callbackButton(
+                    `${device.deviceId}_${device.name}`,
+                    device.name
+                  )
                 );
               });
               deviceList.push(
@@ -48,29 +51,44 @@ const botDevices = (bot, axios, auth) => {
               admin = false;
             });
         };
-        getButtons().then(() => {
+        getButtons(message).then(() => {
           console.log("Lista dispositivi caricata correttamente");
+          message.reply("", Markup.removeKeyboard(true));
+          message.reply(
+            "Ecco la lista dei dispositivi a quali puoi inviare un comando:",
+            Markup.keyboard(deviceList).oneTime().resize().extra()
+          );
         });
       }
     });
-
-    message.reply(
-      "random example",
-      Markup.keyboard(deviceList).oneTime().resize().extra()
-    );
-    deviceList = [];
   });
-  bot.hears(/^(device_)(.*)$/gi, (ctx) => {
-    console.log("Robe");
-    /* return ctx
-      .reply(
+  bot.hears(/^\d(_)(.*)$/gi, (message) => {
+    const deviceID = message.match[0].match(/^\d/gi);
+    let sensorsList = [];
+    const getButtons = async () => {
+      return axios
+        .get(`${process.env.URL_API}/devices/${deviceID}/sensors`)
+        .then((res) => {
+          const sensors = res.data;
+          sensors.forEach((sensor) => {
+            sensorsList.push(
+              Markup.callbackButton(
+                `${sensor.sensorId}_${sensor.type}`,
+                sensor.type
+              )
+            );
+          });
+        });
+    };
+    getButtons(message).then(() => {
+      console.log("Lista sensori caricata correttamente");
+      message.reply("", Markup.removeKeyboard(true));
+      message.reply(
         "Seleziona il sensore:",
-        Extra.markup(Markup.keyboard(["sensore1", "sensore2", "sensore3"]))
-      )
-      .then(() => next());
-       */
-
-    return ctx.reply(`Oh, ${ctx.match[0]} Great choice`);
+        Markup.keyboard(sensorsList).oneTime().resize().extra()
+      );
+      sensorsList = [];
+    });
   });
 };
 module.exports.botDevices = botDevices;
