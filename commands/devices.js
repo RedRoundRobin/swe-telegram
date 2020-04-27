@@ -64,7 +64,7 @@ const botDevices = (bot, axios, auth) => {
     });
   });
   // user has selected to switch on one sensor
-  bot.hears(/^\d(_)+\d(_)(Attiva)/g, (message) => {
+  bot.hears(/^\d{1,2}(_)+\d{1,2}(_)(Attiva)/g, (message) => {
     const devSensID = message.match[0].match(/\d/gi);
     Markup.removeKeyboard();
     message.reply(
@@ -72,7 +72,7 @@ const botDevices = (bot, axios, auth) => {
     );
   });
   // user has selected to switch off one sensor
-  bot.hears(/^\d(_)+\d(_)(Disattiva)/g, (message) => {
+  bot.hears(/^\d{1,2}(_)+\d{1,2}(_)(Disattiva)/g, (message) => {
     const devSensID = message.match[0].match(/\d/gi);
     Markup.removeKeyboard();
     message.reply(
@@ -80,7 +80,7 @@ const botDevices = (bot, axios, auth) => {
     );
   });
   // user has selected one sensor
-  bot.hears(/^\d(_)+\d(_)(.*)/g, (message) => {
+  bot.hears(/^\d{1,2}(_)+\d{1,2}(_)(.*)/g, (message) => {
     const sensorID = message.match[0].match(/\d/gi);
     Markup.removeKeyboard();
     message.reply(
@@ -95,7 +95,7 @@ const botDevices = (bot, axios, auth) => {
     );
   });
   // user has selected one device
-  bot.hears(/^\d(_)(.*)/g, (message) => {
+  bot.hears(/^\d{1,2}(_)(.*)/g, (message) => {
     const deviceID = message.match[0].match(/^\d/gi);
     let sensorsList = [];
     const getButtons = async () => {
