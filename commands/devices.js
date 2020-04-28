@@ -111,7 +111,7 @@ const botDevices = (bot, auth) => {
             sensors.forEach((sensor) => {
               sensorsList.push(
                 Markup.callbackButton(
-                  `${sensor.realSensorId}_${sensor.sensorId}_${sensor.type}`,
+                  `${deviceID}_${sensor.sensorId}_${sensor.type}`,
                   sensor.type
                 )
               );
