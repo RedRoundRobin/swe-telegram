@@ -31,7 +31,7 @@ const botDevices = (bot, auth) => {
             devices.forEach((device) => {
               deviceList.push(
                 Markup.callbackButton(
-                  `${device.deviceId}_${device.name}`,
+                  `${device.name}-D#${device.deviceId}`,
                   device.name
                 )
               );
@@ -59,18 +59,21 @@ const botDevices = (bot, auth) => {
       });
 
     // user has selected to switch on one sensor
-    bot.hears(/^\d{1,11}(_)+\d{1,11}(_)(Attiva)/g, (message) => {
-      const devSensID = message.match[0].match(/\d/gi);
+    bot.hears(/^(.*)(Attiva)(_)(D#\d{1,11})(-)(S#\d{1,11})/g, (message) => {
+      const deviceID = message.match[0].match(/(\d{1,11})/gi)[0];
+      const sensorID = message.match[0].match(/(\d{1,11})$/gi);
+
       message.reply(
-        `Il sensore @${devSensID[1]} del dispositivo @${devSensID[0]} è stato attivato con successo!`,
+        `\u{2705} Hai richiesto l'attivazione del sensore ${sensorID} del dispositivo ${deviceID}`,
         Markup.removeKeyboard().extra()
       );
     });
     // user has selected to switch off one sensor
-    bot.hears(/^\d{1,11}(_)+\d{1,11}(_)(Disattiva)/g, (message) => {
-      const devSensID = message.match[0].match(/\d/gi);
+    bot.hears(/^(.*)(Disattiva)(_)(D#\d{1,11})(-)(S#\d{1,11})/g, (message) => {
+      const deviceID = message.match[0].match(/(\d{1,11})/gi)[0];
+      const sensorID = message.match[0].match(/(\d{1,11})$/gi);
       message.reply(
-        `Il sensore @${devSensID[1]} del dispositivo @${devSensID[0]} è stato disattivato con successo!`,
+        `\u{2705} Hai richiesto la disattivazione del sensore ${sensorID} del dispositivo ${deviceID}`,
         Markup.removeKeyboard().extra()
       );
     });
@@ -82,13 +85,13 @@ const botDevices = (bot, auth) => {
     });
 
     // user has selected one sensor
-    bot.hears(/^\d{1,11}(_)+\d{1,11}(_)(.*)/g, (message) => {
-      const sensorID = message.match[0].match(/\d/gi);
+    bot.hears(/^(.*)(-)(D#\d{1,11})(-)(S#\d{1,11})/g, (message) => {
+      const deviceSensorID = message.match[0].match(/(#\d{1,11})/gi);
       message.reply(
         "Seleziona un input da inviare al comando:",
         Markup.keyboard([
-          `${sensorID[0]}_${sensorID[1]}_Attiva`,
-          `${sensorID[0]}_${sensorID[1]}_Disattiva`,
+          `\u{1F7E2} Attiva_D${deviceSensorID[0]}-S${deviceSensorID[1]}`,
+          `\u{1F534} Disattiva_D${deviceSensorID[0]}-S${deviceSensorID[1]}`,
           `Annulla \u{274C}`,
         ])
           .oneTime()
@@ -98,8 +101,8 @@ const botDevices = (bot, auth) => {
     });
 
     // user has selected one device
-    bot.hears(/^\d{1,11}(_)(.*)/g, (message) => {
-      const deviceID = message.match[0].match(/^\d{1,11}/gi);
+    bot.hears(/^(.*)(-)(D#\d{1,11})/g, (message) => {
+      const deviceID = message.match[0].match(/(\d{1,11})$/g);
       let sensorsList = [];
       const axiosInstance = axios.create();
       const getButtons = async () => {
@@ -111,7 +114,7 @@ const botDevices = (bot, auth) => {
             sensors.forEach((sensor) => {
               sensorsList.push(
                 Markup.callbackButton(
-                  `${deviceID}_${sensor.sensorId}_${sensor.type}`,
+                  `${sensor.type}-D#${deviceID}-S#${sensor.sensorId}`,
                   sensor.type
                 )
               );
