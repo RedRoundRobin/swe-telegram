@@ -27,7 +27,6 @@ const botDevices = (bot, auth) => {
         await axiosInstance
           .get(`${process.env.URL_API}/devices`)
           .then((res) => {
-            admin = true;
             const devices = res.data;
             devices.forEach((device) => {
               deviceList.push(
@@ -37,62 +36,70 @@ const botDevices = (bot, auth) => {
                 )
               );
             });
+            deviceList.push(Markup.callbackButton("Annulla \u{274C}"));
           });
       }
     };
 
-    if (deviceList.length > 0) {
-      getDeviceList()
-        .then(() => {
+    getDeviceList()
+      .then(() => {
+        if (deviceList.length !== 0) {
           console.log("Lista dispositivi caricata correttamente");
-          Markup.removeKeyboard();
           message.reply(
             "Seleziona il dispositivo a cui inviare un comando:",
             Markup.keyboard(deviceList).oneTime().resize().extra()
           );
           deviceList = [];
-        })
-        .catch(() => {
-          message.reply(
-            "Errore, non hai i permessi per eseguire questa azione, oppure il servizio non è al momento disponibile."
-          );
-        });
-    }
+        }
+      })
+      .catch(() => {
+        message.reply(
+          "Errore, non hai i permessi per eseguire questa azione, oppure il servizio non è al momento disponibile."
+        );
+      });
 
     // user has selected to switch on one sensor
-    bot.hears(/^\d{1,2}(_)+\d{1,2}(_)(Attiva)/g, (message) => {
+    bot.hears(/^\d{1,11}(_)+\d{1,11}(_)(Attiva)/g, (message) => {
       const devSensID = message.match[0].match(/\d/gi);
-      Markup.removeKeyboard();
       message.reply(
-        `Il sensore @${devSensID[1]} del dispositivo @${devSensID[0]} è stato attivato con successo!`
+        `Il sensore @${devSensID[1]} del dispositivo @${devSensID[0]} è stato attivato con successo!`,
+        Markup.removeKeyboard().extra()
       );
     });
     // user has selected to switch off one sensor
-    bot.hears(/^\d{1,2}(_)+\d{1,2}(_)(Disattiva)/g, (message) => {
+    bot.hears(/^\d{1,11}(_)+\d{1,11}(_)(Disattiva)/g, (message) => {
       const devSensID = message.match[0].match(/\d/gi);
-      Markup.removeKeyboard();
       message.reply(
-        `Il sensore @${devSensID[1]} del dispositivo @${devSensID[0]} è stato disattivato con successo!`
+        `Il sensore @${devSensID[1]} del dispositivo @${devSensID[0]} è stato disattivato con successo!`,
+        Markup.removeKeyboard().extra()
       );
     });
+
+    // user has selected to switch off one sensor
+    bot.hears(/(Annulla .*)/g, (message) => {
+      // eslint-disable-next-line new-cap
+      message.reply(`Operazione annullata`, Markup.removeKeyboard().extra());
+    });
+
     // user has selected one sensor
-    bot.hears(/^\d{1,2}(_)+\d{1,2}(_)(.*)/g, (message) => {
+    bot.hears(/^\d{1,11}(_)+\d{1,11}(_)(.*)/g, (message) => {
       const sensorID = message.match[0].match(/\d/gi);
-      Markup.removeKeyboard();
       message.reply(
-        "Seleziona l'opzione:",
+        "Seleziona un input da inviare al comando:",
         Markup.keyboard([
           `${sensorID[0]}_${sensorID[1]}_Attiva`,
           `${sensorID[0]}_${sensorID[1]}_Disattiva`,
+          `Annulla \u{274C}`,
         ])
           .oneTime()
           .resize()
           .extra()
       );
     });
+
     // user has selected one device
-    bot.hears(/^\d{1,2}(_)(.*)/g, (message) => {
-      const deviceID = message.match[0].match(/^\d/gi);
+    bot.hears(/^\d{1,11}(_)(.*)/g, (message) => {
+      const deviceID = message.match[0].match(/^\d{1,11}/gi);
       let sensorsList = [];
       const axiosInstance = axios.create();
       const getButtons = async () => {
@@ -104,11 +111,12 @@ const botDevices = (bot, auth) => {
             sensors.forEach((sensor) => {
               sensorsList.push(
                 Markup.callbackButton(
-                  `${deviceID}_${sensor.sensorId}_${sensor.type}`,
+                  `${sensor.realSensorId}_${sensor.sensorId}_${sensor.type}`,
                   sensor.type
                 )
               );
             });
+            sensorsList.push(Markup.callbackButton("Annulla \u{274C}"));
           });
       };
       getButtons(message).then(() => {
