@@ -1,11 +1,12 @@
-const botInfo = (bot, axios, auth) => {
+const axios = require("axios");
+
+const botInfo = (bot, auth) => {
   bot.command("info", (message) => {
     const username = message.from.username;
-
+    const axiosInstance = axios.create();
     const getUserInfo = async () => {
-      await auth.jwtAuth(axios, message);
-
-      await axios
+      await auth.jwtAuth(axiosInstance, message);
+      return await axiosInstance
         .get(`${process.env.URL_API}/users?telegramName=${username}`)
         .then((res) => {
           const data = res.data[0];

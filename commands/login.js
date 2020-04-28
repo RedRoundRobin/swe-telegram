@@ -1,6 +1,9 @@
-const botLogin = (bot, axios, auth) => {
+const axios = require("axios");
+
+const botLogin = (bot, auth) => {
   bot.command("login", (message) => {
-    auth.jwtAuth(axios, message, true);
+    const axiosInstance = axios.create();
+    auth.jwtAuth(axiosInstance, message, true);
   });
 };
 module.exports.botLogin = botLogin;

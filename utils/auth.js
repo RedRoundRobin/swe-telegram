@@ -1,7 +1,8 @@
-const jwtAuth = (axios, message, displayReply = false) => {
+const jwtAuth = (axiosInstance, message, displayReply = false) => {
   const username = message.from.username;
   const chatId = message.from.id;
-  return axios
+
+  return axiosInstance
     .post(`${process.env.URL_API}/auth/telegram`, {
       telegramName: username,
       telegramChat: chatId,
@@ -10,7 +11,8 @@ const jwtAuth = (axios, message, displayReply = false) => {
       const code = res.data.code;
       const token = res.data.token;
       if (code === 1 || code === 2) {
-        axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+        axiosInstance.defaults.headers.common["Authorization"] =
+          "Bearer " + token;
       }
       if (displayReply) {
         switch (code) {

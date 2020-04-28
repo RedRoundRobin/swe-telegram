@@ -1,14 +1,15 @@
+const axios = require("axios");
 const Markup = require("telegraf/markup");
-// const Extra = require("telegraf/extra");
-let admin = false;
 
-const botDevices = (bot, axios, auth) => {
+const botDevices = (bot, auth) => {
+  let admin = false;
   let deviceList = [];
   bot.command("devices", (message) => {
     const username = message.from.username;
-    const getTypeUser = async () => {
-      await auth.jwtAuth(axios, message);
-      return await axios
+    const axiosInstance = axios.create();
+    const getUserRank = async () => {
+      await auth.jwtAuth(axiosInstance, message);
+      return await axiosInstance
         .get(`${process.env.URL_API}/users?telegramName=${username}`)
         .then((res) => {
           const data = res.data[0];
@@ -27,10 +28,11 @@ const botDevices = (bot, axios, auth) => {
           return message.reply(`Esegui di nuovo il comando /login`);
         });
     };
-    getTypeUser().then(() => {
+    getUserRank().then(() => {
       if (admin) {
         const getButtons = async () => {
-          return await axios
+          await auth.jwtAuth(axiosInstance, message);
+          return await axiosInstance
             .get(`${process.env.URL_API}/devices`)
             .then((res) => {
               admin = true;
@@ -43,9 +45,6 @@ const botDevices = (bot, axios, auth) => {
                   )
                 );
               });
-              // deviceList.push(
-              //   Markup.callbackButton("bottone senza risposta", "ciaone")
-              // );
             })
             .catch(() => {
               admin = false;
@@ -98,8 +97,10 @@ const botDevices = (bot, axios, auth) => {
   bot.hears(/^\d{1,2}(_)(.*)/g, (message) => {
     const deviceID = message.match[0].match(/^\d/gi);
     let sensorsList = [];
+    const axiosInstance = axios.create();
     const getButtons = async () => {
-      return axios
+      await auth.jwtAuth(axiosInstance, message);
+      return axiosInstance
         .get(`${process.env.URL_API}/devices/${deviceID}/sensors`)
         .then((res) => {
           const sensors = res.data;

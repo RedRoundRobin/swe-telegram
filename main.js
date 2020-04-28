@@ -1,4 +1,4 @@
-const { axios } = require("./utils/config");
+require("./utils/config");
 const Telegraf = require("telegraf");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -12,9 +12,9 @@ const cmdDevices = require("./commands/devices");
 
 cmdStart.botStart(bot);
 cmdHelp.botHelp(bot);
-cmdLogin.botLogin(bot, axios, auth);
-cmdInfo.botInfo(bot, axios, auth);
-cmdDevices.botDevices(bot, axios, auth);
+cmdLogin.botLogin(bot, auth);
+cmdInfo.botInfo(bot, auth);
+cmdDevices.botDevices(bot, auth);
 
 botServer.listen(process.env.SERVER_PORT);
 console.log(
