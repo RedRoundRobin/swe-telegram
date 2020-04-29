@@ -25,7 +25,7 @@ const botDevices = (bot, auth) => {
         });
       if (admin) {
         await axiosInstance
-          .get(`${process.env.URL_API}/devices`)
+          .get(`${process.env.URL_API}/devices?cmdEnabled=true`)
           .then((res) => {
             const devices = res.data;
             devices.forEach((device) => {
@@ -58,57 +58,17 @@ const botDevices = (bot, auth) => {
         );
       });
 
-    // user has selected to switch on one sensor
-    bot.hears(/^(.*)(Attiva)(_)(D#\d{1,11})(-)(S#\d{1,11})/g, (message) => {
-      const deviceID = message.match[0].match(/(\d{1,11})/gi)[0];
-      const sensorID = message.match[0].match(/(\d{1,11})$/gi);
-
-      message.reply(
-        `\u{2705} Hai richiesto l'attivazione del sensore ${sensorID} del dispositivo ${deviceID}`,
-        Markup.removeKeyboard().extra()
-      );
-    });
-    // user has selected to switch off one sensor
-    bot.hears(/^(.*)(Disattiva)(_)(D#\d{1,11})(-)(S#\d{1,11})/g, (message) => {
-      const deviceID = message.match[0].match(/(\d{1,11})/gi)[0];
-      const sensorID = message.match[0].match(/(\d{1,11})$/gi);
-      message.reply(
-        `\u{2705} Hai richiesto la disattivazione del sensore ${sensorID} del dispositivo ${deviceID}`,
-        Markup.removeKeyboard().extra()
-      );
-    });
-
-    // user has selected to switch off one sensor
-    bot.hears(/(Annulla .*)/g, (message) => {
-      // eslint-disable-next-line new-cap
-      message.reply(`Operazione annullata`, Markup.removeKeyboard().extra());
-    });
-
-    // user has selected one sensor
-    bot.hears(/^(.*)(-)(D#\d{1,11})(-)(S#\d{1,11})/g, (message) => {
-      const deviceSensorID = message.match[0].match(/(#\d{1,11})/gi);
-      message.reply(
-        "Seleziona un input da inviare al comando:",
-        Markup.keyboard([
-          `\u{1F7E2} Attiva_D${deviceSensorID[0]}-S${deviceSensorID[1]}`,
-          `\u{1F534} Disattiva_D${deviceSensorID[0]}-S${deviceSensorID[1]}`,
-          `Annulla \u{274C}`,
-        ])
-          .oneTime()
-          .resize()
-          .extra()
-      );
-    });
-
     // user has selected one device
-    bot.hears(/^(.*)(-)(D#\d{1,11})/g, (message) => {
+    bot.hears(/^(.*)(-)(D#\d{1,11})$/g, (message) => {
       const deviceID = message.match[0].match(/(\d{1,11})$/g);
       let sensorsList = [];
       const axiosInstance = axios.create();
       const getButtons = async () => {
         await auth.jwtAuth(axiosInstance, message);
         return axiosInstance
-          .get(`${process.env.URL_API}/devices/${deviceID}/sensors`)
+          .get(
+            `${process.env.URL_API}/devices/${deviceID}/sensors?cmdEnabled=true`
+          )
           .then((res) => {
             const sensors = res.data;
             sensors.forEach((sensor) => {
@@ -131,6 +91,62 @@ const botDevices = (bot, auth) => {
         );
         sensorsList = [];
       });
+    });
+
+    // user has selected one sensor
+    bot.hears(/^(.*)(-)(D#\d{1,11})(-)(S#\d{1,11})$/g, (message) => {
+      const deviceSensorID = message.match[0].match(/(#\d{1,11})/gi);
+      message.reply(
+        "Seleziona un input da inviare al comando:",
+        Markup.keyboard([
+          `\u{1F7E2} Attiva_D${deviceSensorID[0]}-S${deviceSensorID[1]}`,
+          `\u{1F534} Disattiva_D${deviceSensorID[0]}-S${deviceSensorID[1]}`,
+          `Annulla \u{274C}`,
+        ])
+          .oneTime()
+          .resize()
+          .extra()
+      );
+    });
+    // user has selected to switch on one sensor
+    bot.hears(
+      /^(.*)(Attiva|Disattiva)(_)(D#\d{1,11})(-)(S#\d{1,11})$/g,
+      (message) => {
+        const action = message.match[0].match(/(Attiva|Disattiva)/g)[0];
+        const deviceID = message.match[0].match(/(\d{1,11})/gi)[0];
+        const sensorID = message.match[0].match(/(\d{1,11})$/gi);
+        const axiosInstance = axios.create();
+        const sendCommandToAPI = async (realCommand) => {
+          await auth.jwtAuth(axiosInstance, message);
+          await axiosInstance
+            .put(`${process.env.URL_API}/sensors/${sensorID}`, {
+              data: realCommand,
+            })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+        switch (action) {
+          case "Attiva":
+            sendCommandToAPI(1);
+          case "Disattiva":
+            sendCommandToAPI(0);
+        }
+        message.reply(
+          `\u{2705} Hai richiesto ${
+            action === "Attiva" ? "l'attivazione" : "la disattivazione"
+          } del sensore #${sensorID} del dispositivo #${deviceID}`,
+          Markup.removeKeyboard().extra()
+        );
+      }
+    );
+
+    // user has selected to switch off one sensor
+    bot.hears(/(Annulla .*)/g, (message) => {
+      message.reply(`Operazione annullata`, Markup.removeKeyboard().extra());
     });
   });
 };
