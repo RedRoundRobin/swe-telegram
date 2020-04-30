@@ -44,7 +44,6 @@ const botDevices = (bot, auth) => {
     getDeviceList()
       .then(() => {
         if (deviceList.length !== 0) {
-          console.log("Lista dispositivi caricata correttamente");
           message.reply(
             "Seleziona il dispositivo a cui inviare un comando:",
             Markup.keyboard(deviceList).oneTime().resize().extra()
@@ -83,7 +82,6 @@ const botDevices = (bot, auth) => {
           });
       };
       getButtons(message).then(() => {
-        console.log("Lista sensori caricata correttamente");
         Markup.removeKeyboard();
         message.reply(
           "Seleziona il sensore:",
@@ -123,24 +121,27 @@ const botDevices = (bot, auth) => {
               data: realCommand,
             })
             .then((res) => {
-              console.log(res);
+              message.reply(
+                `\u{2705} Hai richiesto ${
+                  action === "Attiva" ? "l'attivazione" : "la disattivazione"
+                } del sensore #${sensorID} del dispositivo #${deviceID}`,
+                Markup.removeKeyboard().extra()
+              );
             })
             .catch((err) => {
-              console.log(err);
+              message.reply(
+                `[Errore] La richiesta *non* è andata a buon fine. La configurazione potrebbe essere cambiata. Riprova.`,
+                Markup.removeKeyboard().extra());
             });
         };
         switch (action) {
           case "Attiva":
             sendCommandToAPI(1);
+            break;
           case "Disattiva":
             sendCommandToAPI(0);
+            break;
         }
-        message.reply(
-          `\u{2705} Hai richiesto ${
-            action === "Attiva" ? "l'attivazione" : "la disattivazione"
-          } del sensore #${sensorID} del dispositivo #${deviceID}`,
-          Markup.removeKeyboard().extra()
-        );
       }
     );
 
