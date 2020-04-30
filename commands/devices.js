@@ -81,7 +81,7 @@ const botDevices = (bot, auth) => {
             sensorsList.push(Markup.callbackButton("Annulla \u{274C}"));
           });
       };
-      getButtons(message).then(() => {
+      getButtons().then(() => {
         Markup.removeKeyboard();
         message.reply(
           "Seleziona il sensore:",
