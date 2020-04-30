@@ -5,7 +5,7 @@ const botStart = (bot) => {
     return message.replyWithMarkdown(`
 Ciao *${username}*, benvenuto nel RIoT bot!
 Usa il comando /login per effettuare l'autenticazione.
-Per vedere la lista del comandi che puoi utilizzare usa il comando /info`);
+Se hai bisogno di aiuto digita il comando /help`);
   });
 };
 
