@@ -1,7 +1,5 @@
 node_modules
 .DS_Store
-.env
-
 .idea
 target/
 out/
@@ -9,9 +7,4 @@ coverage/
 *.iws
 *.iml
 *.ipr
-
 Icon
-
-Icon
-
-.env

@@ -2,7 +2,7 @@
 
 # Telegram Bot - ThiReMa
 
-:fire: Versione componente: `v0.1.0-dev` 
+:fire: Versione componente: `v0.2.0-rc` 
 
 :pushpin: Main repo: [swe-thirema](https://github.com/Maxelweb/swe-thirema)
 
@@ -34,3 +34,18 @@
 - entrare nella cartella con il terminale
 - $ npm install
 - $ node bot
+
+
+#### Comandi per code style JS
+
+- Check:
+`npm run prettier-eslint-check`
+`npm run prettier-eslint-test-check`
+- Autofix:
+`npm run prettier-eslint`
+`npm run prettier-eslint-test`
+
+
+#### Comandi per i test JS
+
+`npm test`
