@@ -40,7 +40,7 @@ const botServer = http.createServer((req, res) => {
         if (!checkChatId(chatId)) {
           console.log("Invalid chat id");
         } else {
-          const authMessage = `Ecco il tuo codice di autenticazione: ${authCode}`;
+          const authMessage = `Ecco il tuo codice di autenticazione: ${authCode} \u{1F510}`;
           sendMessage(authMessage, chatId);
         }
       } else if (response.reqType === "alert") {
