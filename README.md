@@ -19,14 +19,14 @@
 
 ### Telegram link
 
-- Link: [t.me/ThiReMaBot](t.me/ThiReMaBot)
+- Link: [t.me/RIoT_RRR_Bot](t.me/RIoT_RRR_Bot)
 
 ### Comandi Bot
 
-- info - Comandi supportati
-- login - Autenticazione al sistema ThiReMa
-- status - Controllo dello status dell'utente
-
+- help - informazioni di supporto
+- login - primo avvio e registrazione account
+- info - informazioni utente corrente
+- devices - dispositivi a cui e possibile inviare input
 
 #### Istruzioni di avvio
 
