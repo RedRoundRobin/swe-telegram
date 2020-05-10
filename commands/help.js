@@ -3,7 +3,7 @@ const botHelp = (bot) => {
     replyWithMarkdown(`
 *RIoT - Telegram Bot* 
 
-Ecco la lista dei comandi disponibili:
+\u{2753} Ecco la lista dei comandi disponibili:
 
 - /help - informazioni di supporto (corrente)
 - /login - primo avvio e registrazione account
