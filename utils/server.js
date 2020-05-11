@@ -14,9 +14,8 @@ const sendMessage = (message, chatId) => {
       res.json("OK");
     })
     .catch((err) => {
-      console.log(
-        "Errore " + err.response.status + " nell'invio del messaggio"
-      );
+      console.log(err);
+      console.log("Errore " + err.response + " nell'invio del messaggio");
     });
 };
 
@@ -40,7 +39,7 @@ const botServer = http.createServer((req, res) => {
         if (!checkChatId(chatId)) {
           console.log("Invalid chat id");
         } else {
-          const authMessage = `Ecco il tuo codice di autenticazione: ${authCode} \u{1F510}`;
+          const authMessage = `\u{1F510} Ecco il tuo codice di autenticazione: ${authCode}`;
           sendMessage(authMessage, chatId);
         }
       } else if (response.reqType === "alert") {
@@ -60,7 +59,7 @@ const botServer = http.createServer((req, res) => {
           case 2:
             valueType = "uguale";
         }
-        const messagePart1 = `Attenzione: il sensore ${sensorId} del dispositivo ${deviceId} ha registrato un valore di `;
+        const messagePart1 = `\u{1F510} Attenzione: il sensore #${sensorId} del dispositivo #${deviceId} ha registrato un valore di `;
         const messagePart2 = `${sensorValue} ${valueType} alla soglia (${threshold})`;
         const alertMessage = messagePart1 + messagePart2;
         // eslint-disable-next-line guard-for-in
