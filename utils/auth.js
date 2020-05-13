@@ -16,15 +16,15 @@ const jwtAuth = (axiosInstance, message, displayReply = false) => {
       }
       if (displayReply) {
         switch (code) {
+          case 0:
+            return message.reply(
+              "Username non trovato, registra il tuo username Telegram dalle impostazioni della web-app."
+            );
           case 1:
             return message.reply("Username trovato, registrazione riuscita!");
           case 2:
             return message.reply(
               "Account già registrato, nessuna modifica apportata."
-            );
-          case 3:
-            return message.reply(
-              "Username non trovato, registra il tuo username Telegram dalle impostazioni della web-app."
             );
           default:
             break;

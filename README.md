@@ -2,7 +2,7 @@
 
 # Telegram Bot - ThiReMa
 
-:fire: Versione componente: `v0.2.0-rc` 
+:fire: Versione componente: `v1.0.0-rc` 
 
 :pushpin: Main repo: [swe-thirema](https://github.com/Maxelweb/swe-thirema)
 
@@ -14,19 +14,19 @@
 
 ![Repository Checker](https://github.com/RedRoundRobin/swe-telegram/workflows/Repository%20Checker/badge.svg)
 
-[![Coverage Status](https://coveralls.io/repos/github/RedRoundRobin/swe-telegram/badge.svg?branch=develop)](https://coveralls.io/github/RedRoundRobin/swe-telegram?branch=develop)
+[Coverage Status](https://coveralls.io/github/RedRoundRobin/swe-telegram?branch=develop)
 
 
 ### Telegram link
 
-- Link: [t.me/ThiReMaBot](t.me/ThiReMaBot)
+- Link: [t.me/RIoT_RRR_Bot](t.me/RIoT_RRR_Bot)
 
 ### Comandi Bot
 
-- info - Comandi supportati
-- login - Autenticazione al sistema ThiReMa
-- status - Controllo dello status dell'utente
-
+- help - informazioni di supporto
+- login - primo avvio e registrazione account
+- info - informazioni utente corrente
+- devices - dispositivi a cui e possibile inviare input
 
 #### Istruzioni di avvio
 

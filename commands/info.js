@@ -22,7 +22,7 @@ const botInfo = (bot, auth) => {
           }
           return message.replyWithMarkdown(
             `
-    Ecco i tuoi dati *${message.from.username}*
+    Ecco i tuoi dati *${message.from.username}* \u{1F4DD}
     - *Nome:* ${name}
     - *Cognome:* ${surname}
     - *Email:* ${email}
