@@ -59,7 +59,7 @@ const botServer = http.createServer((req, res) => {
           case 2:
             valueType = "uguale";
         }
-        const messagePart1 = `Alert: il sensore S#${sensorId} del dispositivo D#${deviceId} ha registrato un valore di `;
+        const messagePart1 = `Alert: il sensore S%23${sensorId} del dispositivo D%23${deviceId} ha registrato un valore di `;
         const messagePart2 = `${sensorValue} ${valueType} alla soglia (${threshold})`;
         const alertMessage = messagePart1 + messagePart2;
         // eslint-disable-next-line guard-for-in
