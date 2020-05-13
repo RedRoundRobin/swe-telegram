@@ -2,7 +2,7 @@
 
 # Telegram Bot - ThiReMa
 
-:fire: Versione componente: `v0.2.0-rc` 
+:fire: Versione componente: `v1.0.0-rc` 
 
 :pushpin: Main repo: [swe-thirema](https://github.com/Maxelweb/swe-thirema)
 
@@ -14,7 +14,7 @@
 
 ![Repository Checker](https://github.com/RedRoundRobin/swe-telegram/workflows/Repository%20Checker/badge.svg)
 
-[![Coverage Status](https://coveralls.io/repos/github/RedRoundRobin/swe-telegram/badge.svg?branch=develop)](https://coveralls.io/github/RedRoundRobin/swe-telegram?branch=develop)
+[Coverage Status](https://coveralls.io/github/RedRoundRobin/swe-telegram?branch=develop)
 
 
 ### Telegram link
