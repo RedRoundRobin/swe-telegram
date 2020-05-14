@@ -4,18 +4,20 @@ const axios = require("axios");
 
 const sendMessage = (message, chatId) => {
   axios
-    .post(
-      `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${message}`
-    )
+    .get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, {
+      data: {
+        chat_id: chatId,
+        parse_mode: "markdown",
+        text: message,
+      },
+    })
     .then((res) => {
-      console.log("Messaggio inviato con successo");
-      console.log(res.status);
-      console.log(res.data);
-      res.json("OK");
+      console.log("Messaggio inviato con successo: " + res.status);
+      // console.log(res.data);
     })
     .catch((err) => {
       console.log(err);
-      console.log("Errore " + err.response + " nell'invio del messaggio");
+      console.log("Errore (" + err.response + ") nell'invio del messaggio");
     });
 };
 
@@ -39,29 +41,32 @@ const botServer = http.createServer((req, res) => {
         if (!checkChatId(chatId)) {
           console.log("Invalid chat id");
         } else {
-          const authMessage = `Ecco il tuo codice di autenticazione: ${authCode}`;
+          const authMessage = `\u{1F4F2} Ecco il tuo codice di autenticazione: ${authCode}`;
           sendMessage(authMessage, chatId);
         }
       } else if (response.reqType === "alert") {
         const chatIds = response.telegramChatIds;
-        const deviceId = response.realDeviceId;
-        const sensorId = response.realSensorId;
-        const sensorValue = response.currentValue;
         const threshold = response.currentThreshold;
+        const sensorType = response.sensorType.replace(/_/g, "\\_");
+        const deviceName = response.deviceName.replace(/_/g, "\\_");
+        const gatewayName = response.realGatewayName; // .replace(/_/g, "\\_"); // Solo se non si usa `
         let valueType;
         switch (response.currentThresholdType) {
           case 0:
-            valueType = "superiore";
+            valueType = "superiore (>)";
             break;
           case 1:
-            valueType = "inferiore";
+            valueType = "inferiore (<)";
             break;
           case 2:
-            valueType = "uguale";
+            valueType = "uguale (=)";
+            break;
         }
-        const messagePart1 = `Alert: il sensore S%23${sensorId} del dispositivo D%23${deviceId} ha registrato un valore di `;
-        const messagePart2 = `${sensorValue} ${valueType} alla soglia (${threshold})`;
-        const alertMessage = messagePart1 + messagePart2;
+        const alertMessage = `\u{26A0}\u{FE0F} Alert #${response.alertId} \u{26A0}\u{FE0F}
+- *Sensore:* ${sensorType} (S@${response.realSensorId}) 
+- *Dispositivo:* ${deviceName} (D#${response.deviceId})
+- *Gateway:* \`${gatewayName}\`
+- *Valore:* ${response.currentValue} *${valueType}* alla soglia ${threshold}`;
         // eslint-disable-next-line guard-for-in
         for (const index in chatIds) {
           const chatId = chatIds[index];
