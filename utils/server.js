@@ -67,7 +67,6 @@ const botServer = http.createServer((req, res) => {
 - *Dispositivo:* ${deviceName} (D#${response.deviceId})
 - *Gateway:* \`${gatewayName}\`
 - *Valore:* ${response.currentValue} *${valueType}* alla soglia ${threshold}`;
-
         // eslint-disable-next-line guard-for-in
         for (const index in chatIds) {
           const chatId = chatIds[index];
